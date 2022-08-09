@@ -2,7 +2,6 @@ module IdealistaAPIClient
 
 
 export
-    generate_credentials,
     get_token,
     search,
     valid_fields,
