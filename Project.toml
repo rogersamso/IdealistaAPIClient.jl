@@ -1,0 +1,12 @@
+name = "IdealistaAPIClient"
+uuid = "5722b1ce-14da-11ed-06c6-d930f2b72c9a"
+authors = ["Roger Samsó <r.samso@proton.me>"]
+version = "0.1.0"
+
+[deps]
+Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
