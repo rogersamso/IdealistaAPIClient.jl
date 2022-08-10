@@ -5,11 +5,11 @@ abstract type SearchFields end
 abstract type PropertyFields <: SearchFields end
 
 
-@kwdef struct Search{S<:AbstractString} <: SearchFields
-    country::S
-    operation::S
-    propertyType::S
-    center::S
+@kwdef struct Search <: SearchFields
+    country::String
+    operation::String
+    propertyType::String
+    center::String
     distance::Union{<:Int, Nothing}=nothing
     locationId::Union{<:AbstractString, Nothing}=nothing
     maxItems::Union{<:Int, Nothing}=nothing
@@ -22,7 +22,7 @@ abstract type PropertyFields <: SearchFields end
     adIds::Union{<:Int, Nothing}=nothing
     hasMultimedia::Union{Bool, Nothing}=nothing
 
-    function Search(country::S, operation, propertyType, center, distance=nothing, locationId=nothing,  maxItems=nothing, numPage=nothing, maxPrice=nothing, minPrice=nothing, sinceDate=nothing, order=nothing, sort=nothing, adIds=nothing, hasMultimedia=nothing) where {S}
+    function Search(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)
         
         country ∉  ["es", "pt", "it"] && error("Country field can only be es, pt or it")
         operation ∉ ["sale", "rent"] && error("Only sell and rent operations are allowed")
@@ -35,7 +35,7 @@ abstract type PropertyFields <: SearchFields end
         distance==nothing && locationId==nothing && error("Provide either distance of locationId")
         distance!=nothing && locationId!=nothing && error("Provide either distance of locationId, but not both")
         
-        new{S}(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)  
+        new(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)  
     end
 end
 
@@ -59,14 +59,13 @@ end
     buildingTypes::Union{<:AbstractString, Nothing}=nothing
     bankOffer::Union{Bool, Nothing}=nothing
 
-    function Premises(minSize=nothing, maxSize=nothing, virtualTour=nothing, location=nothing, corner=nothing, airConditioning=nothing, smokeVentilation=nothing, heating=nothing, transfer=nothing, buildingTypes=nothing, bankOffer=nothing)
+    function Premises(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
         
-        minSize!=nothing && (60 >  minSize >  1000) && error("premise size must be between 60 and 1000 m²")
-        maxSize!=nothing && (60 >  maxSize >  1000) && error("premise size must be between 60 and 1000 m²")
+        ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum premise size must be between 60 and 1000 m²"))
+        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum premise size must be between 60 and 1000 m²"))
         location!=nothing && ∉(location, ["shoppingcenter", "street", "mezzanine", "underground", "others"]) && error("location can only take values of shoppingcenter, street, mezzanine, underground or other")
         buildingTypes!=nothing && ∉(buildingTypes, ["premises", "industrialBuilding"]) && error("buildingTypes can only take values of premises or industrialBuilding")
         bankOffer!=nothing && @info("bankOffer only applies in Spain")
-
 
         new(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
     end 
@@ -100,16 +99,16 @@ end
     builtinWardrobes::Union{Bool, Nothing}=nothing
     subTypology::Union{<:AbstractString, Nothing}=nothing
 
-    function Homes(minSize=nothing, maxSize=nothing, virtualTour=nothing, flat=nothng, penthouse=nothing, duplex=nothing, studio=nothing, chalet=nothing, countryHouse=nothing, bedrooms=nothing, bathrooms=nothing, preservation=nothing, newDevelopment=nothing, furnished=nothing, bankOffer=nothing, garage=nothing, terrace=nothing, exterior=nothing, elevator=nothing, swimmingPool=nothing, airConditioning=nothing, storeRoom=nothing, clotheslineSpace=nothing, builtinWardrobes=nothing, subTypology=nothing)
-
-        minSize!=nothing && (60 >  minSize >  1000) && error("house size must be between 60 and 1000 m²")
-        maxSize!=nothing && (60 >  maxSize >  1000) && error("house size must be between 60 and 1000 m²")
-        bedrooms!=nothing && !(eltype(parse.(Int, split(bedrooms, ","))) <: Int) && error("number of bedrooms musth be given as a string of integers separate by ,")
-        bathrooms!=nothing && !(eltype(parse.(Int, split(bathrooms, ","))) <: Int) && error("number of bathrooms musth be given as a string of integers separate by ,")
-        preservation!=nothing && ∉(preservation, ["good", "renew"]) && error("preservation can only take values of good or renew")
-        furnished!=nothing && ∉(furnished, ["furnished", "furnishedKitchen"]) && error("furnished only takes values of furnished or furnishedKitchen")
-        bankOffer!=nothing && @info("bankOffer only applies in Spain")
-        subTypology!=nothing && ∉(subTypology, ["independantHouse", "semidetachedHouse", "terracedHouse"]) && error("subTypology only accepts values of independantHouse, semidetachedHouse or terracedHouse")
+    function Homes(minSize, maxSize, virtualTour, flat, penthouse, duplex, studio, chalet, countryHouse, bedrooms, bathrooms, preservation, newDevelopment, furnished, bankOffer, garage, terrace, exterior, elevator, swimmingPool, airConditioning, storeRoom, clotheslineSpace, builtinWardrobes, subTypology)
+ 
+        ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum house size must be between 60 and 1000 m²"))
+        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum house size must be between 60 and 1000 m²"))
+        ~isnothing(bedrooms) && !(eltype(parse.(Int, split(bedrooms, ","))) <: Int) && error("number of bedrooms musth be given as a string of integers separate by ,")
+        ~isnothing(bathrooms) && !(eltype(parse.(Int, split(bathrooms, ","))) <: Int) && error("number of bathrooms musth be given as a string of integers separate by ,")
+        ~isnothing(preservation) && ∉(preservation, ["good", "renew"]) && error("preservation can only take values of good or renew")
+        ~isnothing(furnished) && ∉(furnished, ["furnished", "furnishedKitchen"]) && error("furnished only takes values of furnished or furnishedKitchen")
+        ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
+        ~isnothing(subTypology) && ∉(subTypology, ["independantHouse", "semidetachedHouse", "terracedHouse"]) && error("subTypology only accepts values of independantHouse, semidetachedHouse or terracedHouse")
 
         new(minSize, maxSize, virtualTour, flat, penthouse, duplex, studio, chalet, countryHouse, bedrooms, bathrooms, preservation, newDevelopment, furnished, bankOffer, garage, terrace, exterior, elevator, swimmingPool, airConditioning, storeRoom, clotheslineSpace, builtinWardrobes, subTypology)
     end
@@ -120,7 +119,7 @@ end
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
     layout::Union{<:AbstractString, Nothing}=nothing
-    buildingType::Union{<:Number, Nothing}=nothing
+    buildingType::Union{<:AbstractString, Nothing}=nothing
     garage::Union{Bool, Nothing}=nothing
     hotWater::Union{Bool, Nothing}=nothing
     heating::Union{Bool, Nothing}=nothing
@@ -129,18 +128,18 @@ end
     security::Union{Bool, Nothing}=nothing
     exterior::Union{Bool, Nothing}=nothing
     bankOffer::Union{Bool, Nothing}=nothing
+    
+    function Offices(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
 
-    function Offices(minSize=nothing, mxSize=nothing, layout=nothing, buildingType=nothing, garage=nothing, hotWater=nothing, heating=nothing, elevator=nothing, airConditioning=nothing, security=nothing, exterior=nothing, bankOffer=nothing)
-        
-        minSize!=nothing && (60 >  minSize >  1000) && error("office size must be between 60 and 1000 m²")
-        maxSize!=nothing && (60 >  maxSize >  1000) && error("office size must be between 60 and 1000 m²")
-        layout!=nothing && ∉(layout, ["withWalls", "openPlan"]) && error("layout can only take vues withWalls and openPlan")
-        buildingType!=nothing && ∉(buildingType, ["exclusive", "mixed"]) && error("buildingType can only take values of exclusive or mixed")
-        bankOffer!=nothing && @info("bankOffer only works in Spain")
+       ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum office size must be between 60 and 1000 m²"))
+       ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum office size must be between 60 and 1000 m²"))
+       ~isnothing(layout) && ∉(layout, ["withWalls", "openPlan"]) && error("layout can only take vues withWalls and openPlan")
+       ~isnothing(buildingType) && ∉(buildingType, ["exclusive", "mixed"]) && error("buildingType can only take values of exclusive or mixed")
+       ~isnothing(bankOffer) && @info("bankOffer only works in Spain")
 
        new(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
+   end
 
-    end
 end
 
 @kwdef struct Bedrooms <: PropertyFields
@@ -150,10 +149,12 @@ end
     gayPartners::Union{Bool, Nothing}=nothing
     newGender::Union{<:AbstractString, Nothing}=nothing
 
-    function Bedrooms(housemates=nothing, smokePolicy=nothing, petsPolicy=nothing, gayPartners=nothing, newGender=nothing)
-        smokePolicy!=nothing && ∉(smokePolicy, ["allowed", "disallowed"]) & error("the only valid values for smokePolicy are allowed or disallowed")
-        petsPolicy!=nothing && ∉(petsPolicy, ["allowed", "disallowed"]) & error("the only valid values for petsPolicy are allowed or disallowed")
-        newGender!=nothing && ∉(newGender, ["male", "female"]) && error("newGender can only take values of male or female")
+    function Bedrooms(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
+        
+        ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) & error("the only valid values for smokePolicy are allowed or disallowed")
+        ~isnohing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) & error("the only valid values for petsPolicy are allowed or disallowed")
+        ~isnothing(newGender) && ∉(newGender, ["male", "female"]) && error("newGender can only take values of male or female")
+        
         new(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
      end
 end
