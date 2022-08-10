@@ -24,16 +24,16 @@ abstract type PropertyFields <: SearchFields end
 
     function Search(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)
         
-        country ∉  ["es", "pt", "it"] && error("Country field can only be es, pt or it")
-        operation ∉ ["sale", "rent"] && error("Only sell and rent operations are allowed")
-        propertyType ∉ ["homes", "offices", "premises", "garages", "bedrooms"] && error("propertyType can only take homes, offices, premises, garages or bedrooms")
-        sort!=nothing && !in(sort, ["asc", "desc"]) && error("the sort field can only be set to asc or desc")
-        sinceDate!=nothing && !in(sinceDate, ["W", "M", "T", "Y"]) && error("the sinceDate field only accepts W, M, T, Y")
+        isnothing(distance) && isnothing(locationId) && error("Provide either distance of locationId")
+        ~isnothing(distance) && ~isnothing(locationId) && error("Provide either distance of locationId, but not both")
+        country ∉  ["es", "pt", "it"] && throw(DomainError(:country, "Country field can only be es, pt or it"))
+        operation ∉ ["sale", "rent"] && throw(DomainError(:operation, "Only sell and rent operations are allowed"))
+        propertyType ∉ ["homes", "offices", "premises", "garages", "bedrooms"] && throw(DomainError(:propertyType,"propertyType can only take homes, offices, premises, garages or bedrooms"))
+        ~isnothing(sort) && ∉(sort, ["asc", "desc"]) && throw(DomainError(:sort, "the sort field can only be set to asc or desc"))
+        ~isnothing(sinceDate) && ∉(sinceDate, ["W", "M", "T", "Y"]) && throw(DomainError(:sinceDate, "the sinceDate field only accepts W, M, T, Y"))
         
         # TODO should also limit the values of the sort field, depending on the given propertyType field.
 
-        distance==nothing && locationId==nothing && error("Provide either distance of locationId")
-        distance!=nothing && locationId!=nothing && error("Provide either distance of locationId, but not both")
         
         new(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)  
     end
@@ -61,11 +61,11 @@ end
 
     function Premises(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
         
-        ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum premise size must be between 60 and 1000 m²"))
-        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum premise size must be between 60 and 1000 m²"))
-        location!=nothing && ∉(location, ["shoppingcenter", "street", "mezzanine", "underground", "others"]) && error("location can only take values of shoppingcenter, street, mezzanine, underground or other")
-        buildingTypes!=nothing && ∉(buildingTypes, ["premises", "industrialBuilding"]) && error("buildingTypes can only take values of premises or industrialBuilding")
-        bankOffer!=nothing && @info("bankOffer only applies in Spain")
+        ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "premise size must be between 60 and 1000 m²")))
+        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "premise size must be between 60 and 1000 m²")))
+        ~isnothing(location) && ∉(location, ["shoppingcenter", "street", "mezzanine", "underground", "others"]) && throw(DomainError(:location, "location can only take values of shoppingcenter, street, mezzanine, underground or other"))
+        ~isnothing(buildingTypes) && ∉(buildingTypes, ["premises", "industrialBuilding"]) && throw(DomainError(:buildingTypes, "buildingTypes can only take values of premises or industrialBuilding"))
+        ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
 
         new(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
     end 
@@ -101,14 +101,14 @@ end
 
     function Homes(minSize, maxSize, virtualTour, flat, penthouse, duplex, studio, chalet, countryHouse, bedrooms, bathrooms, preservation, newDevelopment, furnished, bankOffer, garage, terrace, exterior, elevator, swimmingPool, airConditioning, storeRoom, clotheslineSpace, builtinWardrobes, subTypology)
  
-        ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum house size must be between 60 and 1000 m²"))
-        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum house size must be between 60 and 1000 m²"))
-        ~isnothing(bedrooms) && !(eltype(parse.(Int, split(bedrooms, ","))) <: Int) && error("number of bedrooms musth be given as a string of integers separate by ,")
-        ~isnothing(bathrooms) && !(eltype(parse.(Int, split(bathrooms, ","))) <: Int) && error("number of bathrooms musth be given as a string of integers separate by ,")
-        ~isnothing(preservation) && ∉(preservation, ["good", "renew"]) && error("preservation can only take values of good or renew")
-        ~isnothing(furnished) && ∉(furnished, ["furnished", "furnishedKitchen"]) && error("furnished only takes values of furnished or furnishedKitchen")
+        ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "minimum house size must be between 60 and 1000 m²")))
+        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "maximum house size must be between 60 and 1000 m²")))
+        ~isnothing(bedrooms) && !(eltype(parse.(Int, split(bedrooms, ","))) <: Int) && throw(ArgumentError("number of bedrooms must be given as a string of integers separate by ,"))
+        ~isnothing(bathrooms) && !(eltype(parse.(Int, split(bathrooms, ","))) <: Int) && throw(ArgumentError("number of bathrooms must be given as a string of integers separate by ,"))
+        ~isnothing(preservation) && ∉(preservation, ["good", "renew"]) && throw(DomainError(:preservation, "preservation can only take values of good or renew"))
+        ~isnothing(furnished) && ∉(furnished, ["furnished", "furnishedKitchen"]) && throw(DomainError(:furnished, "furnished only takes values of furnished or furnishedKitchen"))
         ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
-        ~isnothing(subTypology) && ∉(subTypology, ["independantHouse", "semidetachedHouse", "terracedHouse"]) && error("subTypology only accepts values of independantHouse, semidetachedHouse or terracedHouse")
+        ~isnothing(subTypology) && ∉(subTypology, ["independantHouse", "semidetachedHouse", "terracedHouse"]) && throw(DomainError(:subTypology, "subTypology only accepts values of independantHouse, semidetachedHouse or terracedHouse"))
 
         new(minSize, maxSize, virtualTour, flat, penthouse, duplex, studio, chalet, countryHouse, bedrooms, bathrooms, preservation, newDevelopment, furnished, bankOffer, garage, terrace, exterior, elevator, swimmingPool, airConditioning, storeRoom, clotheslineSpace, builtinWardrobes, subTypology)
     end
@@ -131,10 +131,10 @@ end
     
     function Offices(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
 
-       ~isnothing(minSize) && ((60 <= minSize <= 1000) || error("minimum office size must be between 60 and 1000 m²"))
-       ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || error("maximum office size must be between 60 and 1000 m²"))
-       ~isnothing(layout) && ∉(layout, ["withWalls", "openPlan"]) && error("layout can only take vues withWalls and openPlan")
-       ~isnothing(buildingType) && ∉(buildingType, ["exclusive", "mixed"]) && error("buildingType can only take values of exclusive or mixed")
+       ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "office size must be between 60 and 1000 m²")))
+       ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "office size must be between 60 and 1000 m²")))
+       ~isnothing(layout) && ∉(layout, ["withWalls", "openPlan"]) && throw(DomainError(:layout, "layout can only take vues withWalls and openPlan"))
+       ~isnothing(buildingType) && ∉(buildingType, ["exclusive", "mixed"]) && throw(DomainError(:buildingType, "buildingType can only take values of exclusive or mixed"))
        ~isnothing(bankOffer) && @info("bankOffer only works in Spain")
 
        new(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
@@ -151,9 +151,9 @@ end
 
     function Bedrooms(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
         
-        ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) & error("the only valid values for smokePolicy are allowed or disallowed")
-        ~isnohing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) & error("the only valid values for petsPolicy are allowed or disallowed")
-        ~isnothing(newGender) && ∉(newGender, ["male", "female"]) && error("newGender can only take values of male or female")
+        ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) & throw(DomainError(:smokePolicy, "the only valid values for smokePolicy are allowed or disallowed"))
+        ~isnothing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) & throw(DomainError(:petsPolicy, "the only valid values for petsPolicy are allowed or disallowed"))
+        ~isnothing(newGender) && ∉(newGender, ["male", "female"]) && throw(DomainError(:newGender, "newGender can only take values of male or female"))
         
         new(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
      end
