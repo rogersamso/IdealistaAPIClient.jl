@@ -1,7 +1,12 @@
 # IdealistaAPIClient
 
-Simple Julia client for the Idealista Search API.
+Simple Julia client for the [Idealista](https://idealista.com) [Search API](https://developers.idealista.com/access-request).
 
+It was tested with v3.5 of the Search API.
+
+## Warning
+
+This package is under development and still untested, so use it with caution. According to the previous, the package is not yet in the [julia Registry](https://github.com/JuliaRegistries/General).
 
 ## Requirements
 
@@ -12,7 +17,14 @@ Use [this link](https://developers.idealista.com/access-request) to request an A
 
 ## Installation instructions
 
-At the Julia REPL, using Pkg; Pkg.add("IdealistaAPIClient")
+At the Julia REPL:
+
+```julia
+using Pkg
+
+Pkg.add("https://github.com/rogersamso/IdealistaAPIClient.jl")
+
+```
 
 ## Utilization example
 
