@@ -3,13 +3,17 @@ using JSON
 using Base64
 using Dates
 using Serialization
-
+using InteractiveUtils
 
 const APIKEY = ENV["APIKEY"]
 const SECRET = ENV["SECRET"]
 
 valid_fields(T::Type) = fieldnames(T)
 
+function valid_fields()
+    x = pushfirst!(subtypes(PropertyFields), Search)
+    Dict(T=>valid_fields(T) for T in x)
+end
 
 function struct_to_dict(s)
     Dict(String(key)=>getfield(s, key) for key ∈ fieldnames(typeof(s)) if getfield(s, key)!=nothing)

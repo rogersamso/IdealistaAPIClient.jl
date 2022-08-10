@@ -31,6 +31,10 @@ Pkg.add("https://github.com/rogersamso/IdealistaAPIClient.jl")
 ```julia
 using IdealistaAPIClient
 
+# see list of valid fields for each property type
+# note that only some of the Search type fields must be passed, while the rest are optional (see the Valid search fields section below)
+valid_fields()
+
 # define search fields
 search_fields = (country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale", bedrooms="1,2,3,4", swimmingPool=true)
 
