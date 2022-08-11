@@ -1,12 +1,3 @@
-using HTTP
-using JSON
-using Base64
-using Dates
-using Serialization
-using InteractiveUtils
-
-const APIKEY = ENV["APIKEY"]
-const SECRET = ENV["SECRET"]
 
 valid_fields(T::Type) = fieldnames(T)
 
@@ -45,9 +36,7 @@ function get_token()::Dict{String, Any}
     
     if isfile(serialization_path)
         token_dict = deserialize(serialization_path)
-        if valid_token(token_dict) == true
-            return token_dict
-        end
+        valid_token(token_dict) &&  return token_dict
     end
 
     @info "Getting new access token"
@@ -154,6 +143,10 @@ function request_data(token::AbstractString, search_fields::Dict{String, Any})
         JSON.parse(String(response.body))
     
     catch e
-        rethrow(e)
+        if isa(e, HTTP.Exceptions.StatusError)
+            throw(ArgumentError(JSON.parse(String(e.response.body))["message"]))
+        else
+            rethrow(e)
+        end
     end
 end

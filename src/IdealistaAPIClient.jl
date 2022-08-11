@@ -1,5 +1,14 @@
 module IdealistaAPIClient
 
+using HTTP
+using JSON
+using Base64
+using Dates
+using Serialization
+using InteractiveUtils
+
+const APIKEY = ENV["APIKEY"]
+const SECRET = ENV["SECRET"]
 
 export
     get_token,
