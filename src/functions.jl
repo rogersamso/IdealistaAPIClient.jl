@@ -25,10 +25,12 @@ function generate_credentials(apikey::AbstractString, secret::AbstractString)
 end
 
 
-function valid_token(token_d::Dict{String, Any})::Bool
+function valid_token(token_d::Dict)::Bool
     
-    !haskey(token_d, "access_token") && throw(UndefKeywordError(:access_token))
-    
+    haskey(token_d, "access_token") || throw(UndefKeywordError(:access_token))
+    haskey(token_d, "expires_in") || throw(UndefKeywordError(:expires_in))
+    isa(token_d["expires_in"], DateTime) || error("expires_in must be a DateTime object")
+
     if Dates.now() < token_d["expires_in"]
         return true
     else
