@@ -76,14 +76,7 @@ function search(base_search::Search, property::Union{<:PropertyFields, Nothing}=
         token = get_token()["access_token"]
     end
 
-    property!=nothing && !isa(property, getfield(Main.IdealistaAPIClient, Symbol(uppercasefirst(base_search.propertyType)))) && error("The propertyType value in the Search struct must coincide with the type of the property argument") 
-    
-    search_fields = struct_to_dict(base_search)
-    
-    if property!=nothing
-        merge!(search_fields, struct_to_dict(property))
-    end
-
+    search_fields = validate_search_fields(base_search, property)
     request_data(token, search_fields)
 end
 
@@ -95,7 +88,30 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
     else
         token = get_token()["access_token"]
     end
+
+    search_fields = validate_search_fields(;(;kwargs...)...) 
     
+    request_data(token, search_fields)
+
+end
+
+
+function validate_search_fields(base_search::Search, property::Union{<:PropertyFields, Nothing})::Dict
+
+    property!=nothing && !isa(property, getfield(Main.IdealistaAPIClient, Symbol(uppercasefirst(base_search.propertyType)))) && error("The propertyType value in the Search struct must coincide with the type of the property argument") 
+    
+    search_fields = struct_to_dict(base_search)
+    
+    if property!=nothing
+        merge!(search_fields, struct_to_dict(property))
+    end
+
+    return search_fields
+end
+
+
+function validate_search_fields(;kwargs...)::Dict
+
     search_fields = Dict(key=>getindex(kwargs, key) for key in keys(kwargs))
     
     base_search = Dict{Symbol, Any}()
@@ -129,8 +145,7 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 
     end
 
-    request_data(token, search_obj)
-
+    return search_obj
 end
 
 
