@@ -7,6 +7,9 @@ on:
     branches:
       - main
     tags: '*'
+env:
+  APIKEY: 'none'
+  SECRET: 'none'
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
