@@ -1,5 +1,8 @@
 # IdealistaAPIClient
 
+[![Build status (Github Actions)](https://github.com/rogersamso/IdealistaAPIClient.jl/workflows/CI/badge.svg)](https://github.com/rogersamso/IdealistaAPIClient.jl/actions)
+[![codecov.io](http://codecov.io/github/rogersamso/IdealistaAPIClient.jl/coverage.svg?branch=main)](http://codecov.io/github/rogersamso/IdealistaAPIClient.jl?branch=main)
+
 Simple Julia client for the [Idealista](https://idealista.com) [Search API](https://developers.idealista.com/access-request).
 
 It was tested with v3.5 of the Search API.
