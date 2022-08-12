@@ -4,7 +4,62 @@ import Base: @kwdef # these fields must be in the search fields
 abstract type SearchFields end
 abstract type PropertyFields <: SearchFields end
 
+"""
+    Search <: SearchFields
 
+A struct that stores the basic (non-property-type specific) search fields
+of the Idealista Search API
+
+Each field represents a valid base search field for the Idealista Search API.
+The country, operation, propertyType and center + distance or center + locationId
+are mandatory
+
+# Constructors
+```julia
+
+Search(country,
+       operation,
+       propertyType,
+       center,
+       distance,
+       locationId,
+       maxItems,
+       numPage,
+       maxPrice,
+       minPrice,
+       sinceDate,
+       orderg,
+       sort,
+       adIds,
+       hasMultimedia)
+
+Search(; country::String,
+         operation::String,
+         propertyType::String,
+         center::String,
+         distance::Union{<:Int, Nothing}=nothing,
+         locationId::Union{<:AbstractString, Nothing}=nothing,
+         maxItems::Union{<:Int, Nothing}=nothing,
+         numPage::Union{<:Int, Nothing}=nothing,
+         maxPrice::Union{<:Number, Nothing}=nothing,
+         minPrice::Union{<:Number, Nothing}=nothing,
+         sinceDate::Union{<:AbstractString, Nothing}=nothing,
+         order::Union{<:AbstractString, Nothing}=nothing,
+         sort::Union{<:AbstractString, Nothing}=nothing,
+         adIds::Union{<:Int, Nothing}=nothing,
+         hasMultimedia::Union{Bool, Nothing}=nothing)
+```
+
+# Examples
+```jldoctest
+julia> Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+
+julia> Search(country="it", operation="sale", propertyType="homes", center="42.0,-3.7", distance=15000)
+Search("it", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+
+```
+"""
 @kwdef struct Search <: SearchFields
     country::String
     operation::String
@@ -39,6 +94,34 @@ abstract type PropertyFields <: SearchFields end
     end
 end
 
+
+"""
+    Garages <: PropertyFields
+
+A struct that stores the garage specific search fields
+
+Each field represents a valid garages search field for the Idealista Search API
+
+# Constructors
+```julia
+
+Garages(bankOffer, automaticDoor, motorcycleParking, security)
+
+Garages(; bankOffer::Union{Bool, Nothing}=nothing,
+          automaticDoor::Union{Bool, Nothing}=nothing,
+          motorcycleParking::Union{Bool, Nothing}=nothing,
+          security::Union{Bool, Nothing}=nothing)
+```
+
+# Examples
+```jldoctest
+julia> Garages(nothing, true, true, false)
+Garages(nothing, true, true, false)
+
+julia> Garages(automaticDoor=true, security=true)
+Garages(nothing, true, nothing, true)
+```
+"""
 @kwdef struct Garages <: PropertyFields 
     bankOffer::Union{Bool, Nothing}=nothing
     automaticDoor::Union{Bool, Nothing}=nothing
@@ -46,6 +129,53 @@ end
     security::Union{Bool, Nothing}=nothing
 end
 
+
+
+"""
+    Premises <: PropertyFields
+
+A struct that stores the premises specific search fields
+
+Each field represents a valid premises search field for the Idealista Search API
+
+# Constructors
+```julia
+
+Premises(minSize,
+         maxSize,
+         virtualTour,
+         location,
+         corner,
+         airConditioning,
+         smokeVentilation,
+         heating,
+         transfer,
+         buildingTypes,
+         bankOffer)
+
+Premises(; minSize::Union{<:Number, Nothing}=nothing,
+           maxSize::Union{<:Number, Nothing}=nothing,
+           virtualTour::Union{Bool, Nothing}=nothing,
+           location::Union{<:AbstractString, Nothing}=nothing,
+           corner::Union{Bool, Nothing}=nothing,
+           airConditioning::Union{Bool, Nothing}=nothing,
+           smokeVentilation::Union{Bool, Nothing}=nothing,
+           heating::Union{Bool, Nothing}=nothing,
+           transfer::Union{Bool, Nothing}=nothing,
+           buildingTypes::Union{<:AbstractString, Nothing}=nothing,
+           bankOffer::Union{Bool, Nothing}=nothing)
+```
+
+# Examples
+```jldoctest
+julia> Premises(70, 120, false, "shoppingcenter", false, true, false, true, false, "industrialBuilding", false)
+[ Info: bankOffer only applies in Spain
+Premises(70, 120, false, "shoppingcenter", false, true, false, true, false, "industrialBuilding", false)
+
+julia> Premises(minSize=70, maxSize=120, transfer=false, location="shoppingcenter")
+Premises(70, 120, nothing, "shoppingcenter", nothing, nothing, nothing, nothing, false, nothing, nothing)
+```
+"""
 @kwdef struct Premises <: PropertyFields
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
@@ -72,6 +202,81 @@ end
 end
 
 
+"""
+    Homes <: PropertyFields
+
+A struct that stores the homes specific search fields
+
+Each field represents a valid homes search field for the Idealista Search API
+
+# Constructors
+```julia
+
+Homes(minSize,
+      maxSize,
+      virtualTour,
+      flat,
+      penthouse,
+      duplex,
+      studio,
+      chalet,
+      countryHouse,
+      bedrooms,
+      bathrooms,
+      preservation,
+      newDevelopment,
+      furnished,
+      bankOffer,
+      garage,
+      terrace,
+      exterior,
+      elevator,
+      swimmingPool,
+      airConditioning,
+      storeRoom,
+      clotheslineSpace,
+      builtinWardrobes,
+      subTypology)
+
+struct Homes(; minSize::Union{<:Number, Nothing}=nothing,
+               maxSize::Union{<:Number, Nothing}=nothing,
+               virtualTour::Union{Bool, Nothing}=nothing,
+               flat::Union{Bool, Nothing}=nothing,
+               penthouse::Union{Bool, Nothing}=nothing,
+               duplex::Union{Bool, Nothing}=nothing,
+               studio::Union{Bool, Nothing}=nothing,
+               chalet::Union{Bool, Nothing}=nothing,
+               countryHouse::Union{Bool, Nothing}=nothing,
+               bedrooms::Union{<:AbstractString, Nothing}=nothing,
+               bathrooms::Union{<:AbstractString, Nothing}=nothing,
+               preservation::Union{<:AbstractString, Nothing}=nothing,
+               newDevelopment::Union{Bool, Nothing}=nothing,
+               furnished::Union{<:AbstractString, Nothing}=nothing,
+               bankOffer::Union{Bool, Nothing}=nothing,
+               garage::Union{Bool, Nothing}=nothing,
+               terrace::Union{Bool, Nothing}=nothing,
+               exterior::Union{Bool, Nothing}=nothing,
+               elevator::Union{Bool, Nothing}=nothing,
+               swimmingPool::Union{Bool, Nothing}=nothing,
+               airConditioning::Union{Bool, Nothing}=nothing,
+               storeRoom::Union{Bool, Nothing}=nothing,
+               clotheslineSpace::Union{Bool, Nothing}=nothing,
+               builtinWardrobes::Union{Bool, Nothing}=nothing,
+               subTypology::Union{<:AbstractString, Nothing}=nothing)
+
+```
+
+# Examples
+```jldoctest
+
+julia> Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
+[ Info: bankOffer only applies in Spain
+Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
+
+julia> Homes(minSize=70, swimmingPool=false, preservation="renew", subTypology="terracedHouse")
+Homes(70, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, "renew", nothing, nothing, nothing, nothing, nothing, nothing, nothing, false, nothing, nothing, nothing, nothing, "terracedHouse")
+```
+"""
 @kwdef struct Homes <: PropertyFields
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
@@ -115,6 +320,52 @@ end
 end
 
 
+"""
+    Offices <: PropertyFields
+
+A struct that stores the office specific search fields
+
+Each field represents a valid offices search field for the Idealista Search API
+
+# Constructors
+```julia
+
+Offices(minSize,
+        maxSize,
+        layout,
+        buildingType,
+        garage,
+        hotWater,
+        heating,
+        elevator,
+        airConditioning,
+        security,
+        exterior,
+        bankOffer)
+
+Offices(; minSize::Union{<:Number, Nothing}=nothing,
+          maxSize::Union{<:Number, Nothing}=nothing,
+          layout::Union{<:AbstractString, Nothing}=nothing,
+          buildingType::Union{<:AbstractString, Nothing}=nothing,
+          garage::Union{Bool, Nothing}=nothing,
+          hotWater::Union{Bool, Nothing}=nothing,
+          heating::Union{Bool, Nothing}=nothing,
+          elevator::Union{Bool, Nothing}=nothing,
+          airConditioning::Union{Bool, Nothing}=nothing,
+          security::Union{Bool, Nothing}=nothing,
+          exterior::Union{Bool, Nothing}=nothing,
+          bankOffer::Union{Bool, Nothing}=nothing)
+```
+# Examples
+```jldoctest
+julia> Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
+[ Info: bankOffer only works in Spain
+Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
+
+julia> Offices(minSize=100, maxSize=400, layout="withWalls", buildingType="exclusive")
+Offices(100, 400, "withWalls", "exclusive", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+```
+"""
 @kwdef struct Offices <: PropertyFields
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
@@ -142,6 +393,39 @@ end
 
 end
 
+
+
+"""
+    Bedrooms <: PropertyFields
+
+A struct that stores the bedrooms specific search fields
+
+Each field represents a valid bedrooms search field for the Idealista Search API
+
+# Constructors
+```julia
+
+Bedrooms(housemates,
+         smokePolicy,
+         petsPolicy,gayPartners,
+         newGender)
+
+Bedrooms(; housemates::Union{<:AbstractString, Nothing}=nothing,
+           smokePolicy::Union{<:AbstractString, Nothing}=nothing,
+           petsPolicy::Union{<:AbstractString, Nothing}=nothing,
+           gayPartners::Union{Bool, Nothing}=nothing,
+           newGender::Union{<:AbstractString, Nothing}=nothing)
+```
+
+# Examples
+```jldoctest
+julia> Bedrooms("2,4", "disallowed", "disallowed", true, "male")
+Bedrooms("2,4", "disallowed", "disallowed", true, "male")
+
+julia> Bedrooms(housemates="2,4", smokePolicy="disallowed", petsPolicy="disallowed", gayPartners=true, newGender="male")
+Bedrooms("2,4", "disallowed", "disallowed", true, "male")
+```
+"""
 @kwdef struct Bedrooms <: PropertyFields
     housemates::Union{<:AbstractString, Nothing}=nothing
     smokePolicy::Union{<:AbstractString, Nothing}=nothing
@@ -151,8 +435,9 @@ end
 
     function Bedrooms(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
         
-        ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) & throw(DomainError(:smokePolicy, "the only valid values for smokePolicy are allowed or disallowed"))
-        ~isnothing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) & throw(DomainError(:petsPolicy, "the only valid values for petsPolicy are allowed or disallowed"))
+        ~isnothing(housemates) && !(eltype(parse.(Int, split(housemates, ","))) <: Int) && throw(ArgumentError("housemates must be given as a string of integers separate by ,"))
+        ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) && throw(DomainError(:smokePolicy, "the only valid values for smokePolicy are allowed or disallowed"))
+        ~isnothing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) && throw(DomainError(:petsPolicy, "the only valid values for petsPolicy are allowed or disallowed"))
         ~isnothing(newGender) && ∉(newGender, ["male", "female"]) && throw(DomainError(:newGender, "newGender can only take values of male or female"))
         
         new(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
