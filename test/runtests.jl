@@ -1,6 +1,8 @@
 using Test
 using IdealistaAPIClient
 using Serialization
+using Dates
+
 
 const dir = joinpath(dirname(pathof(IdealistaAPIClient)), "..", "test", "testfiles")
 

@@ -1,5 +1,4 @@
 using IdealistaAPIClient: struct_to_dict, valid_token, validate_search_fields
-using Dates
 
 @testset "struct_to_dict" begin
     
@@ -27,7 +26,7 @@ end
     missing_date = Dict("access_token"=>"token")
     @test_throws UndefKeywordError valid_token(missing_date)
     
-    missing_token = Dict("expires_in"=> DateTime("2020-01-01", "yyyy-mm-dd"))
+    missing_token = Dict("expires_in"=> Dates.DateTime("2020-01-01", "yyyy-mm-dd"))
     @test_throws UndefKeywordError valid_token(missing_token)
 
     wrong_date_type = Dict("access_token" => "token",
