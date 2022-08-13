@@ -108,7 +108,7 @@ Search:
     hasMultimedia::Union{Bool, Nothing}=nothing
 
     function Search(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)
-        
+
         isnothing(distance) && isnothing(locationId) && error("Provide either distance of locationId")
         ~isnothing(distance) && ~isnothing(locationId) && error("Provide either distance of locationId, but not both")
         country ∉  ["es", "pt", "it"] && throw(DomainError(:country, "Country field can only be es, pt or it"))
@@ -116,11 +116,11 @@ Search:
         propertyType ∉ ["homes", "offices", "premises", "garages", "bedrooms"] && throw(DomainError(:propertyType,"propertyType can only take homes, offices, premises, garages or bedrooms"))
         ~isnothing(sort) && ∉(sort, ["asc", "desc"]) && throw(DomainError(:sort, "the sort field can only be set to asc or desc"))
         ~isnothing(sinceDate) && ∉(sinceDate, ["W", "M", "T", "Y"]) && throw(DomainError(:sinceDate, "the sinceDate field only accepts W, M, T, Y"))
-        
+
         # TODO should also limit the values of the sort field, depending on the given propertyType field.
 
-        
-        new(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)  
+
+        new(country, operation, propertyType, center, distance, locationId, maxItems, numPage, maxPrice, minPrice, sinceDate, order, sort, adIds, hasMultimedia)
     end
 end
 
@@ -160,7 +160,7 @@ Garages:
 	security => true
 ```
 """
-@kwdef struct Garages <: PropertyFields 
+@kwdef struct Garages <: PropertyFields
     bankOffer::Union{Bool, Nothing}=nothing
     automaticDoor::Union{Bool, Nothing}=nothing
     motorcycleParking::Union{Bool, Nothing}=nothing
@@ -250,7 +250,7 @@ Premises:
     bankOffer::Union{Bool, Nothing}=nothing
 
     function Premises(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
-        
+
         ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "premise size must be between 60 and 1000 m²")))
         ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "premise size must be between 60 and 1000 m²")))
         ~isnothing(location) && ∉(location, ["shoppingcenter", "street", "mezzanine", "underground", "others"]) && throw(DomainError(:location, "location can only take values of shoppingcenter, street, mezzanine, underground or other"))
@@ -258,7 +258,7 @@ Premises:
         ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
 
         new(minSize, maxSize, virtualTour, location, corner, airConditioning, smokeVentilation, heating, transfer, buildingTypes, bankOffer)
-    end 
+    end
 end
 
 
@@ -416,7 +416,7 @@ Homes:
     subTypology::Union{<:AbstractString, Nothing}=nothing
 
     function Homes(minSize, maxSize, virtualTour, flat, penthouse, duplex, studio, chalet, countryHouse, bedrooms, bathrooms, preservation, newDevelopment, furnished, bankOffer, garage, terrace, exterior, elevator, swimmingPool, airConditioning, storeRoom, clotheslineSpace, builtinWardrobes, subTypology)
- 
+
         ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "minimum house size must be between 60 and 1000 m²")))
         ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "maximum house size must be between 60 and 1000 m²")))
         ~isnothing(bedrooms) && !(eltype(parse.(Int, split(bedrooms, ","))) <: Int) && throw(ArgumentError("number of bedrooms must be given as a string of integers separate by ,"))
@@ -502,6 +502,7 @@ Offices:
 	bankOffer => nothing
 ```
 """
+
 @kwdef struct Offices <: PropertyFields
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
@@ -515,7 +516,7 @@ Offices:
     security::Union{Bool, Nothing}=nothing
     exterior::Union{Bool, Nothing}=nothing
     bankOffer::Union{Bool, Nothing}=nothing
-    
+
     function Offices(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
 
        ~isnothing(minSize) && ((60 <= minSize <= 1000) || throw(DomainError(:minSize, "office size must be between 60 and 1000 m²")))
@@ -572,6 +573,7 @@ Bedrooms:
 	newGender => male
 ```
 """
+
 @kwdef struct Bedrooms <: PropertyFields
     housemates::Union{<:AbstractString, Nothing}=nothing
     smokePolicy::Union{<:AbstractString, Nothing}=nothing
@@ -580,12 +582,12 @@ Bedrooms:
     newGender::Union{<:AbstractString, Nothing}=nothing
 
     function Bedrooms(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
-        
+
         ~isnothing(housemates) && !(eltype(parse.(Int, split(housemates, ","))) <: Int) && throw(ArgumentError("housemates must be given as a string of integers separate by ,"))
         ~isnothing(smokePolicy) && ∉(smokePolicy, ["allowed", "disallowed"]) && throw(DomainError(:smokePolicy, "the only valid values for smokePolicy are allowed or disallowed"))
         ~isnothing(petsPolicy) && ∉(petsPolicy, ["allowed", "disallowed"]) && throw(DomainError(:petsPolicy, "the only valid values for petsPolicy are allowed or disallowed"))
         ~isnothing(newGender) && ∉(newGender, ["male", "female"]) && throw(DomainError(:newGender, "newGender can only take values of male or female"))
-        
+
         new(housemates, smokePolicy, petsPolicy, gayPartners, newGender)
      end
 end

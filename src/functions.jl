@@ -128,7 +128,8 @@ function valid_fields(;indent::Int=1)
 end
 
 function struct_to_dict(s)
-    Dict(String(key)=>getfield(s, key) for key ∈ fieldnames(typeof(s)) if getfield(s, key)!=nothing)
+    Dict(String(key)=>getfield(s, key) for key ∈ fieldnames(typeof(s))
+                if ~isnothing(getfield(s, key)))
 end
 
 
@@ -255,7 +256,9 @@ Dict{String, Any} with 12 entries:
 
 ```
 """
-function search(base_search::Search, property::Union{<:PropertyFields, Nothing}=nothing; token_d::Union{Dict{String, Any}, Nothing}=nothing)::Dict{String, Any}
+function search(base_search::Search,
+                property::Union{<:PropertyFields, Nothing}=nothing;
+                token_d::Union{Dict{String, Any}, Nothing}=nothing)::Dict{String, Any}
 
     if token_d != nothing
         valid_token(token_d) ? token = token_d["access_token"] : token = get_token()["access_token"]
@@ -302,7 +305,7 @@ Dict{String, Any} with 12 entries:
 """
 function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 
-    if token_d != nothing
+    if ~isnothing(token_d)
         valid_token(token_d) ? token = token_d["access_token"] : token = get_token()["access_token"]
     else
         token = get_token()["access_token"]
@@ -315,9 +318,14 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 end
 
 
-function validate_search_fields(base_search::Search, property::Union{<:PropertyFields, Nothing})::Dict
+function validate_search_fields(base_search::Search,
+    property::Union{<:PropertyFields, Nothing})::Dict
 
-    property!=nothing && !isa(property, getfield(Main.IdealistaAPIClient, Symbol(uppercasefirst(base_search.propertyType)))) && error("The propertyType value in the Search struct must coincide with the type of the property argument")
+    ~isnothing(property) && !isa(property,
+       getfield(Main.IdealistaAPIClient,
+                Symbol(uppercasefirst(base_search.propertyType)))) &&
+        error("The propertyType value in the Search struct must coincide
+              with the type of the property argument")
 
     search_fields = struct_to_dict(base_search)
 
@@ -348,13 +356,16 @@ function validate_search_fields(;kwargs...)::Dict
 
     if !isempty(property_search)
 
-        property_type = getfield(Main.IdealistaAPIClient, Symbol(uppercasefirst(base_search[:propertyType])))
+        property_type = getfield(Main.IdealistaAPIClient,
+                                Symbol(uppercasefirst(
+                                    base_search[:propertyType])))
 
         property_search_fields = keys(property_search)
 
         for field in property_search_fields
             if field ∉ fieldnames(property_type)
-                @info("$(String(field)) is not a valid field for $(base_search[:propertyType]), it will be ignored")
+                @info("$(String(field)) is not a valid field for
+                      $(base_search[:propertyType]), it will be ignored")
                 pop!(property_search, field)
             end
         end
@@ -371,9 +382,11 @@ end
 function request_data(token::AbstractString, search_fields::Dict{String, Any})
 
     try
-        response = HTTP.post("https://api.idealista.com/3.5/$(getindex(search_fields, "country"))/search",
-                             [ "Authorization" => "Bearer $token"],
-                             body= search_fields)
+        response = HTTP.post(
+            "https://api.idealista.com/3.5/$(getindex(search_fields,
+            "country"))/search",
+            [ "Authorization" => "Bearer $token"],
+            body = search_fields)
         JSON.parse(String(response.body))
 
     catch e
