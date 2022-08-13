@@ -13,3 +13,5 @@ Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [compat]
 julia = "1.7.3"
+HTTP = "1.2.1, 2"
+JSON = "0.21.3, 1"
