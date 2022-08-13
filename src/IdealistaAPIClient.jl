@@ -7,8 +7,6 @@ using Dates
 using Serialization
 using InteractiveUtils
 
-const APIKEY = ENV["APIKEY"]
-const SECRET = ENV["SECRET"]
 
 export
     get_token,
