@@ -1,6 +1,6 @@
 using Documenter, IdealistaAPIClient
 
-DocMeta.setdocmeta!(IdealistaAPIClient, :DocTestSetup, :(using IdealistaAPIClient); recursive=true)
+# DocMeta.setdocmeta!(IdealistaAPIClient, :DocTestSetup, :(using IdealistaAPIClient); recursive=true)
 
 makedocs(sitename="IdealistaAPIClient.jl",
         # doctest = false, # TODO activate them at some point
