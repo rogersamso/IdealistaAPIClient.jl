@@ -1,7 +1,5 @@
 ```@meta
-DocTestSetup = quote
-    using IdealistaAPIClient
-end
+CurrentModule = IdealistaAPIClient
 ```
 
 # Types
