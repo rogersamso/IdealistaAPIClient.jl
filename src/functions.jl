@@ -17,6 +17,7 @@ bankOffer
 automaticDoor
 motorcycleParking
 security
+
 ```
 """
 function valid_fields(T::Type; indent::Int=0)
@@ -117,6 +118,7 @@ Premises
 	transfer
 	buildingTypes
 	bankOffer
+
 ```
 """
 function valid_fields(;indent::Int=1)
@@ -174,6 +176,7 @@ Dict{String, Any} with 5 entries:
   "scope"        => "read"
   "expires_in"   => DateTime("2022-08-14T03:07:24.573")
   "jti"          => "jti_value"
+
 ```
 """
 function get_token()::Dict{String, Any}

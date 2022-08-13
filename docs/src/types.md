@@ -2,9 +2,6 @@
 CurrentModule = IdealistaAPIClient
 ```
 
-```
-# Types
-
 ```@index
 Pages = ["types.md"]
 ```

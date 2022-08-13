@@ -467,6 +467,7 @@ Offices(; minSize::Union{<:Number, Nothing}=nothing,
           exterior::Union{Bool, Nothing}=nothing,
           bankOffer::Union{Bool, Nothing}=nothing)
 ```
+
 # Examples
 ```jldoctest
 julia> Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
@@ -502,7 +503,6 @@ Offices:
 	bankOffer => nothing
 ```
 """
-
 @kwdef struct Offices <: PropertyFields
     minSize::Union{<:Number, Nothing}=nothing
     maxSize::Union{<:Number, Nothing}=nothing
@@ -573,7 +573,6 @@ Bedrooms:
 	newGender => male
 ```
 """
-
 @kwdef struct Bedrooms <: PropertyFields
     housemates::Union{<:AbstractString, Nothing}=nothing
     smokePolicy::Union{<:AbstractString, Nothing}=nothing
