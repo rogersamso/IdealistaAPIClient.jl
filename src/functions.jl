@@ -1,9 +1,129 @@
 
-valid_fields(T::Type) = fieldnames(T)
+"""
+    valid_fields(T::Type; indent::Int=0)
 
-function valid_fields()
+Print fieldnames of type T
+
+Prints fieldnames of the passed type to standard output
+
+# Keyword Arguments
+* indent: number of tabs of indentation
+
+# Examples
+```julia
+julia>valid_fields(Garages)
+bankOffer
+automaticDoor
+motorcycleParking
+security
+```
+"""
+function valid_fields(T::Type; indent::Int=0)
+    for field in fieldnames(T)
+        println("\t"^indent, field)
+    end
+end
+
+
+"""
+    valid_fields(;indent::Int=1)
+
+Prints fieldnames of all SearchFields subtypes
+
+Prints to stdout names and fieldnames of subtypes of SearchFields
+
+# Keyword Arguments
+* indent: number of tabs of indentation
+
+# Examples
+```julia
+julia>valid_fields()
+Search
+	country
+	operation
+	propertyType
+	center
+	distance
+	locationId
+	maxItems
+	numPage
+	maxPrice
+	minPrice
+	sinceDate
+	order
+	sort
+	adIds
+	hasMultimedia
+Bedrooms
+	housemates
+	smokePolicy
+	petsPolicy
+	gayPartners
+	newGender
+Garages
+	bankOffer
+	automaticDoor
+	motorcycleParking
+	security
+Homes
+	minSize
+	maxSize
+	virtualTour
+	flat
+	penthouse
+	duplex
+	studio
+	chalet
+	countryHouse
+	bedrooms
+	bathrooms
+	preservation
+	newDevelopment
+	furnished
+	bankOffer
+	garage
+	terrace
+	exterior
+	elevator
+	swimmingPool
+	airConditioning
+	storeRoom
+	clotheslineSpace
+	builtinWardrobes
+	subTypology
+Offices
+	minSize
+	maxSize
+	layout
+	buildingType
+	garage
+	hotWater
+	heating
+	elevator
+	airConditioning
+	security
+	exterior
+	bankOffer
+Premises
+	minSize
+	maxSize
+	virtualTour
+	location
+	corner
+	airConditioning
+	smokeVentilation
+	heating
+	transfer
+	buildingTypes
+	bankOffer
+```
+"""
+function valid_fields(;indent::Int=1)
     x = pushfirst!(subtypes(PropertyFields), Search)
-    Dict(T=>valid_fields(T) for T in x)
+    for T in x
+        println(T)
+        valid_fields(T, indent=indent)
+    end
 end
 
 function struct_to_dict(s)
@@ -30,6 +150,30 @@ function valid_token(token_d::Dict)::Bool
     end
 end
 
+
+"""
+    get_token()
+
+Return Idealista Search API parsed response for token request
+
+# Notes
+APIKEY and SECRET must be defined as environmental variables.
+Generated tokens get cached in tempdir, and any new calls to
+the get_token function before the expiration date will return
+the cached value
+
+# Examples
+```julia
+julia>get_token()
+[ Info: Getting new access token
+Dict{String, Any} with 5 entries:
+  "access_token" => "token_value"
+  "token_type"   => "bearer"
+  "scope"        => "read"
+  "expires_in"   => DateTime("2022-08-14T03:07:24.573")
+  "jti"          => "jti_value"
+```
+"""
 function get_token()::Dict{String, Any}
     
     serialization_path = joinpath(tempdir(), "idealista_tk.bin")
@@ -84,7 +228,7 @@ This method uses Search and property types instances as arguments
 
 # Examples
 ```julia
-julia> search(Search(country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale"), Homes(bedrooms="1,2,3,4", swimmingPool=true))
+julia>search(Search(country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale"), Homes(bedrooms="1,2,3,4", swimmingPool=true))
 [ Info: Getting new access token
 Dict{String, Any} with 12 entries:
   "hiddenResults"      => false
@@ -129,7 +273,7 @@ This method uses keyword arguments corresponding to valid search fields of the I
 
 # Examples
 ```julia
-julia> search(country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale", bedrooms="1,2,3,4", swimmingPool=true)
+julia>search(country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale", bedrooms="1,2,3,4", swimmingPool=true)
 [ Info: Getting new access token
 Dict{String, Any} with 12 entries:
   "hiddenResults"      => false

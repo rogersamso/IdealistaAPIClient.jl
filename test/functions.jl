@@ -10,16 +10,6 @@ using IdealistaAPIClient: struct_to_dict, valid_token, validate_search_fields
 
 end
 
-@testset "valid_fields" begin
-
-    @test valid_fields(Garages) == fieldnames(Garages)
-    
-    # without arguments
-    all_types = valid_fields()
-    @test isa(all_types, Dict)
-    @test sort(map(x-> x.name.name, collect(keys(all_types)))) == [:Bedrooms, :Garages, :Homes, :Offices, :Premises,  :Search]
-
-end
 
 @testset "valid_token" begin
     
@@ -34,7 +24,7 @@ end
     @test_throws ErrorException valid_token(wrong_date_type)
     
     expired_token = deserialize(joinpath(dir, "token.bin"))
-    @test valid_token(expired_token) == false skip=true
+    @test valid_token(expired_token) == false 
 
     soon = Dates.now() + Minute(60)
     valid =  Dict("access_token" => "token",

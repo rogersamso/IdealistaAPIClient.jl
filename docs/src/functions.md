@@ -17,7 +17,6 @@ valid_fields
 ## Generating a token
 ```@docs
 get_token
-valid_token
 ```
 
 ## Performing property searches
