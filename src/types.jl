@@ -1,4 +1,4 @@
-import Base: @kwdef # these fields must be in the search fields
+import Base: @kwdef, show # these fields must be in the search fields
 
 
 abstract type SearchFields end
@@ -52,11 +52,41 @@ Search(; country::String,
 
 # Examples
 ```jldoctest
-julia> Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
-Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+julia>Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+Search:
+	country => es
+	operation => sale
+	propertyType => homes
+	center => 42.0,-3.7
+	distance => 15000
+	locationId => nothing
+	maxItems => nothing
+	numPage => nothing
+	maxPrice => nothing
+	minPrice => nothing
+	sinceDate => nothing
+	order => nothing
+	sort => nothing
+	adIds => nothing
+	hasMultimedia => nothing
 
 julia> Search(country="it", operation="sale", propertyType="homes", center="42.0,-3.7", distance=15000)
-Search("it", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+Search:
+	country => it
+	operation => sale
+	propertyType => homes
+	center => 42.0,-3.7
+	distance => 15000
+	locationId => nothing
+	maxItems => nothing
+	numPage => nothing
+	maxPrice => nothing
+	minPrice => nothing
+	sinceDate => nothing
+	order => nothing
+	sort => nothing
+	adIds => nothing
+	hasMultimedia => nothing
 
 ```
 """
@@ -116,10 +146,18 @@ Garages(; bankOffer::Union{Bool, Nothing}=nothing,
 # Examples
 ```jldoctest
 julia> Garages(nothing, true, true, false)
-Garages(nothing, true, true, false)
+Garages:
+	bankOffer => nothing
+	automaticDoor => true
+	motorcycleParking => true
+	security => false
 
 julia> Garages(automaticDoor=true, security=true)
-Garages(nothing, true, nothing, true)
+Garages:
+	bankOffer => nothing
+	automaticDoor => true
+	motorcycleParking => nothing
+	security => true
 ```
 """
 @kwdef struct Garages <: PropertyFields 
@@ -170,10 +208,32 @@ Premises(; minSize::Union{<:Number, Nothing}=nothing,
 ```jldoctest
 julia> Premises(70, 120, false, "shoppingcenter", false, true, false, true, false, "industrialBuilding", false)
 [ Info: bankOffer only applies in Spain
-Premises(70, 120, false, "shoppingcenter", false, true, false, true, false, "industrialBuilding", false)
+Premises:
+	minSize => 70
+	maxSize => 120
+	virtualTour => false
+	location => shoppingcenter
+	corner => false
+	airConditioning => true
+	smokeVentilation => false
+	heating => true
+	transfer => false
+	buildingTypes => industrialBuilding
+	bankOffer => false
 
 julia> Premises(minSize=70, maxSize=120, transfer=false, location="shoppingcenter")
-Premises(70, 120, nothing, "shoppingcenter", nothing, nothing, nothing, nothing, false, nothing, nothing)
+Premises:
+	minSize => 70
+	maxSize => 120
+	virtualTour => nothing
+	location => shoppingcenter
+	corner => nothing
+	airConditioning => nothing
+	smokeVentilation => nothing
+	heating => nothing
+	transfer => false
+	buildingTypes => nothing
+	bankOffer => nothing
 ```
 """
 @kwdef struct Premises <: PropertyFields
@@ -271,10 +331,61 @@ struct Homes(; minSize::Union{<:Number, Nothing}=nothing,
 
 julia> Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
 [ Info: bankOffer only applies in Spain
-Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
+Homes:
+	minSize => 65
+	maxSize => 130
+	virtualTour => false
+	flat => true
+	penthouse => true
+	duplex => true
+	studio => true
+	chalet => true
+	countryHouse => true
+	bedrooms => 1,2,3,4
+	bathrooms => 1,2
+	preservation => good
+	newDevelopment => true
+	furnished => furnished
+	bankOffer => false
+	garage => true
+	terrace => true
+	exterior => false
+	elevator => false
+	swimmingPool => false
+	airConditioning => false
+	storeRoom => false
+	clotheslineSpace => false
+	builtinWardrobes => true
+	subTypology => independantHouse
+
 
 julia> Homes(minSize=70, swimmingPool=false, preservation="renew", subTypology="terracedHouse")
-Homes(70, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, "renew", nothing, nothing, nothing, nothing, nothing, nothing, nothing, false, nothing, nothing, nothing, nothing, "terracedHouse")
+Homes:
+	minSize => 70
+	maxSize => nothing
+	virtualTour => nothing
+	flat => nothing
+	penthouse => nothing
+	duplex => nothing
+	studio => nothing
+	chalet => nothing
+	countryHouse => nothing
+	bedrooms => nothing
+	bathrooms => nothing
+	preservation => renew
+	newDevelopment => nothing
+	furnished => nothing
+	bankOffer => nothing
+	garage => nothing
+	terrace => nothing
+	exterior => nothing
+	elevator => nothing
+	swimmingPool => false
+	airConditioning => nothing
+	storeRoom => nothing
+	clotheslineSpace => nothing
+	builtinWardrobes => nothing
+	subTypology => terracedHouse
 ```
 """
 @kwdef struct Homes <: PropertyFields
@@ -360,10 +471,35 @@ Offices(; minSize::Union{<:Number, Nothing}=nothing,
 ```jldoctest
 julia> Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
 [ Info: bankOffer only works in Spain
-Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
+Offices:
+	minSize => 100
+	maxSize => 400
+	layout => withWalls
+	buildingType => exclusive
+	garage => false
+	hotWater => true
+	heating => true
+	elevator => true
+	airConditioning => true
+	security => false
+	exterior => false
+	bankOffer => false
+
 
 julia> Offices(minSize=100, maxSize=400, layout="withWalls", buildingType="exclusive")
-Offices(100, 400, "withWalls", "exclusive", nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+Offices:
+	minSize => 100
+	maxSize => 400
+	layout => withWalls
+	buildingType => exclusive
+	garage => nothing
+	hotWater => nothing
+	heating => nothing
+	elevator => nothing
+	airConditioning => nothing
+	security => nothing
+	exterior => nothing
+	bankOffer => nothing
 ```
 """
 @kwdef struct Offices <: PropertyFields
@@ -420,10 +556,20 @@ Bedrooms(; housemates::Union{<:AbstractString, Nothing}=nothing,
 # Examples
 ```jldoctest
 julia> Bedrooms("2,4", "disallowed", "disallowed", true, "male")
-Bedrooms("2,4", "disallowed", "disallowed", true, "male")
+Bedrooms:
+	housemates => 2,4
+	smokePolicy => disallowed
+	petsPolicy => disallowed
+	gayPartners => true
+	newGender => male
 
 julia> Bedrooms(housemates="2,4", smokePolicy="disallowed", petsPolicy="disallowed", gayPartners=true, newGender="male")
-Bedrooms("2,4", "disallowed", "disallowed", true, "male")
+Bedrooms:
+	housemates => 2,4
+	smokePolicy => disallowed
+	petsPolicy => disallowed
+	gayPartners => true
+	newGender => male
 ```
 """
 @kwdef struct Bedrooms <: PropertyFields
@@ -444,3 +590,9 @@ Bedrooms("2,4", "disallowed", "disallowed", true, "male")
      end
 end
 
+function Base.:show(io::IO, ::MIME"text/plain", s::SearchFields)
+    println(io, "$(typeof(s).name.wrapper):")
+    for fname in fieldnames(typeof(s))
+        println(io, "\t$fname => $(getfield(s, fname))")
+    end
+end

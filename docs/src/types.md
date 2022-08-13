@@ -2,6 +2,7 @@
 CurrentModule = IdealistaAPIClient
 ```
 
+```
 # Types
 
 ```@index
