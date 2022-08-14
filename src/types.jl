@@ -165,6 +165,12 @@ Garages:
     automaticDoor::Union{Bool, Nothing}=nothing
     motorcycleParking::Union{Bool, Nothing}=nothing
     security::Union{Bool, Nothing}=nothing
+
+    function Garages(bankOffer, automaticDoor, motorcycleParking, security)
+
+        ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
+        new(bankOffer, automaticDoor, motorcycleParking, security)
+    end
 end
 
 
@@ -523,7 +529,7 @@ Offices:
        ~isnothing(maxSize) && ((60 <= maxSize <= 1000) || throw(DomainError(:maxSize, "office size must be between 60 and 1000 m²")))
        ~isnothing(layout) && ∉(layout, ["withWalls", "openPlan"]) && throw(DomainError(:layout, "layout can only take vues withWalls and openPlan"))
        ~isnothing(buildingType) && ∉(buildingType, ["exclusive", "mixed"]) && throw(DomainError(:buildingType, "buildingType can only take values of exclusive or mixed"))
-       ~isnothing(bankOffer) && @info("bankOffer only works in Spain")
+       ~isnothing(bankOffer) && @info("bankOffer only applies in Spain")
 
        new(minSize, maxSize, layout, buildingType, garage, hotWater, heating, elevator, airConditioning, security, exterior, bankOffer)
    end
