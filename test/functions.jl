@@ -11,6 +11,19 @@ using IdealistaAPIClient: struct_to_dict, valid_token, validate_search_fields
 end
 
 
+@testset "valid_fields" begin
+    
+    # capture stdout
+    out = @capture_out valid_fields()
+    @test all(occursin.(["Search", "Garages", "Homes", "Premises", "Bedrooms", "Offices"], out))
+    
+    out_homes = @capture_out valid_fields(Homes)
+    @test all(occursin.(["airConditioning", "storeRoom", "clotheslineSpace", "builtinWardrobe", "subTypology"], out_homes))
+
+end
+
+
+
 @testset "valid_token" begin
     
     missing_date = Dict("access_token"=>"token")
