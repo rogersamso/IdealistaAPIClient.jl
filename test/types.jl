@@ -87,6 +87,9 @@ end
     
     # method error
     @test_throws MethodError Garages(security="true")
+
+    @test_logs (:info, "bankOffer only applies in Spain") Garages(bankOffer=true)
+
 end
 
 
@@ -112,6 +115,7 @@ end
     # wrong buildingTypes
     @test_throws DomainError Premises(buildingTypes="house")
 
+    @test_logs (:info, "bankOffer only applies in Spain") Premises(bankOffer=true)
 end
 
 
@@ -140,6 +144,7 @@ end
     # subTypology takes independantHouse, semidetachedHouse or terracedHouse
     @test_throws DomainError Homes(subTypology="pretty house")
 
+    @test_logs (:info, "bankOffer only applies in Spain") Homes(bankOffer=true)
 end
 
 
@@ -161,6 +166,7 @@ end
     # buildingType must be exclusive or mixed
     @test_throws DomainError Offices(buildingType="mixed and exclusive")
 
+    @test_logs (:info, "bankOffer only applies in Spain") Offices(bankOffer=true)
 end
 
 
