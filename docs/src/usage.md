@@ -44,3 +44,4 @@ response_body = search(search_fields, home_fields)
 
 ```
 
+The response body, as expected, is the body of the response of our request, in the form of a dictionary. The response can be then turned into a `Response` object by passing it to the `process_response` function.

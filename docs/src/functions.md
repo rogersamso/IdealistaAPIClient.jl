@@ -23,3 +23,8 @@ get_token
 ```@docs
 search
 ```
+
+## Process the response
+```@docs
+process_response
+```

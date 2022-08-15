@@ -1,4 +1,7 @@
-using IdealistaAPIClient: struct_to_dict, valid_token, validate_search_fields
+using IdealistaAPIClient: struct_to_dict,
+                          valid_token,
+                          validate_search_fields
+
 
 @testset "struct_to_dict" begin
     

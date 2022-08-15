@@ -597,6 +597,7 @@ Bedrooms:
      end
 end
 
+
 function Base.:show(io::IO, ::MIME"text/plain", s::SearchFields)
     println(io, "$(typeof(s).name.wrapper):")
     for fname in fieldnames(typeof(s))
@@ -605,6 +606,23 @@ function Base.:show(io::IO, ::MIME"text/plain", s::SearchFields)
 end
 
 
+"""
+    ParkingSpace <: ResponseFields
+
+A struct that stores the details of parking spaces returned by the Idealista Search API
+
+
+# Constructors
+```julia
+
+ParkingSpace(hasParkingSpace, isParkingSpaceIncludedInPrice, parkingSpacePrice)
+
+ParkingSpace(; hasParkingSpace::Bool,
+               isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing,
+               parkingSpacePrice::Union{Number, Nothing}=nothing)
+
+```
+"""
 @kwdef struct ParkingSpace <:ResponseFields
     hasParkingSpace::Bool
     isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing
@@ -612,12 +630,35 @@ end
 end
 
 
+"""
+    DetailedType <: ResponseFields
+
+A struct that stores the detailed Type of properties returned by the Idealista Search API
+
+
+# Constructors
+```julia
+
+DetailedType(typology, subTypology)
+
+DetailedType(; typology::String,
+               subTypology::Union{String, Nothing}=nothing)
+```
+"""
 @kwdef struct DetailedType <:ResponseFields
     typology::String
     subTypology::Union{String, Nothing}=nothing
 end
 
 
+"""
+    Element <: ResponseFields
+
+Generic response fields for all property types
+
+# Notes
+In the future there should be diferent types for each property type (i.e. Homes, Offices, Premses, Bedrooms and Garages)
+"""
 @kwdef struct Element <:ResponseFields
     address::String
     bathrooms::Union{Int64, Nothing}=nothing
@@ -667,19 +708,58 @@ end
     tenantNumber::Union{Int64, Nothing}=nothing
 end
 
+
+"""
+    Response <: ResponseFields
+
+A struct that stores the Idealista Search API response fields
+
+
+# Constructors
+```julia
+
+Response(actualPage,
+         itemsPerPage,
+         lowerRangePosition,
+         upperRangePosition,
+         paginable,
+         numPaginations,
+         summary,
+         total,
+         totalPages,
+         elementList,
+         alertName,
+         hiddenResults)
+
+
+Response(; actualPage::Int64,
+           itemsPerPage::Int64,
+           lowerRangePosition::Int64,
+           upperRangePosition::Int64,
+           paginable::Bool,
+           numPaginations::Int64,
+           summary::Vector{String},
+           total::Int64,
+           totalPages::Int64,
+           elementList::Vector{Element},
+           alertName::String,
+           hiddenResults::Bool)
+
+```
+"""
 @kwdef struct Response <:ResponseFields
     actualPage::Int64
     itemsPerPage::Int64
     lowerRangePosition::Int64
+    upperRangePosition::Int64
     paginable::Bool
+    numPaginations::Int64
     summary::Vector{String}
     total::Int64
     totalPages::Int64
-    upperRangePosition::Int64
     elementList::Vector{Element}
     alertName::String
     hiddenResults::Bool
-    numPaginations::Int64
 end
 
 

@@ -1,4 +1,5 @@
 using Base: exit
+using IdealistaAPIClient: Response, Element, ParkingSpace, DetailedType
 
 """
     valid_fields(T::Type; indent::Int=0)
@@ -127,11 +128,6 @@ function valid_fields(;indent::Int=1)
         println(T)
         valid_fields(T, indent=indent)
     end
-end
-
-function struct_to_dict(s)
-    Dict(String(key)=>getfield(s, key) for key ∈ fieldnames(typeof(s))
-                if ~isnothing(getfield(s, key)))
 end
 
 
@@ -273,7 +269,6 @@ function search(base_search::Search,
     
     response = request_data(token, search_fields)
 
-    # build_response_objects(response)
 end
 
 
@@ -321,32 +316,36 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 
     response = request_data(token, search_fields)
 
-    # build_response_objects(response)
 end
 
 
-function build_response_objects(response::Dict{String, Any})
+"""
+    process_response(response) -> Response
+
+Process the response of the Idealista Search API and returns a Response object
+
+"""
+function process_response(response::Dict{String, Any})::Response
     response2 = deepcopy(response)
     elements = pop!(response2, "elementList")
     
-    new_elements = Vector{IdealistaAPIClient.Element}(undef, length(elements))
+    new_elements = Vector{Element}(undef, length(elements))
 
     for (num, element) in enumerate(elements)
         if haskey(element, "parkingSpace")
-            setindex!(element, IdealistaAPIClient.ParkingSpace(;IdealistaAPIClient.stringdict_to_nt(element["parkingSpace"])...), "parkingSpace")
+            setindex!(element, ParkingSpace(;stringdict_to_nt(element["parkingSpace"])...), "parkingSpace")
         end
         if haskey(element, "detailedType")
-            setindex!(element, IdealistaAPIClient.DetailedType(;IdealistaAPIClient.stringdict_to_nt(element["detailedType"])...), "detailedType")
+            setindex!(element, DetailedType(;stringdict_to_nt(element["detailedType"])...), "detailedType")
         end
-        new_elements[num] = IdealistaAPIClient.Element(;IdealistaAPIClient.stringdict_to_nt(element)...)
+        new_elements[num] = Element(;stringdict_to_nt(element)...)
     end
 
     setindex!(response2, new_elements, "elementList")
 
-    IdealistaAPIClient.Response(;stringdict_to_nt(response2)...)
+    Response(;stringdict_to_nt(response2)...)
 
 end
-
 
 
 function validate_search_fields(base_search::Search,
@@ -430,14 +429,5 @@ function request_data(token::AbstractString, search_fields::Dict{String, Any})
 end
 
 
-function stringdict_to_nt(x::Dict{String, T}) where {T}
-    new_dict = Dict{Symbol, T}()
-
-    for (key, val) in x
-        setindex!(new_dict, val, Symbol(key))
-    end
-
-    return (;new_dict...)
-end
 
 
