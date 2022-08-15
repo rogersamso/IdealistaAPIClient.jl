@@ -1,6 +1,8 @@
 using IdealistaAPIClient: struct_to_dict,
                           valid_token,
-                          validate_search_fields
+                          validate_search_fields,
+                          Response,
+                          Element
 
 
 @testset "struct_to_dict" begin
@@ -65,5 +67,21 @@ end
     result2 = validate_search_fields(s, p)
     @test isa(result2, Dict{String, Any})
     @test sort(collect(keys(result2))) == sorted_keys
+
+end
+
+
+@testset "process_response" begin
+    properties = ["homes",
+                  "premises",
+                  "offices",
+                  "garages",
+                  "bedrooms"]
+    for prop in properties
+        response = deserialize(joinpath(dir, prop * ".bin"))
+        processed_resp = process_response(response)
+        @test isa(processed_resp, Response)
+        @test isa(processed_resp.elementList, Vector{Element})
+    end
 
 end
