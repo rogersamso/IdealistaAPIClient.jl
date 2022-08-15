@@ -3,7 +3,7 @@ import Base: @kwdef, show # these fields must be in the search fields
 
 abstract type SearchFields end
 abstract type PropertyFields <: SearchFields end
-
+abstract type ResponseFields end
 """
     Search <: SearchFields
 
@@ -116,7 +116,7 @@ Search:
         propertyType ∉ ["homes", "offices", "premises", "garages", "bedrooms"] && throw(DomainError(:propertyType,"propertyType can only take homes, offices, premises, garages or bedrooms"))
         ~isnothing(sort) && ∉(sort, ["asc", "desc"]) && throw(DomainError(:sort, "the sort field can only be set to asc or desc"))
         ~isnothing(sinceDate) && ∉(sinceDate, ["W", "M", "T", "Y"]) && throw(DomainError(:sinceDate, "the sinceDate field only accepts W, M, T, Y"))
-
+        propertyType == "bedrooms" && operation != "rent" && throw(DomainError(:operation, "for bedrooms propertyType, the only possible operation is rent"))
         # TODO should also limit the values of the sort field, depending on the given propertyType field.
 
 
@@ -603,3 +603,84 @@ function Base.:show(io::IO, ::MIME"text/plain", s::SearchFields)
         println(io, "\t$fname => $(getfield(s, fname))")
     end
 end
+
+
+@kwdef struct ParkingSpace <:ResponseFields
+    hasParkingSpace::Bool
+    isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing
+    parkingSpacePrice::Union{Number, Nothing}=nothing
+end
+
+
+@kwdef struct DetailedType <:ResponseFields
+    typology::String
+    subTypology::Union{String, Nothing}=nothing
+end
+
+
+@kwdef struct Element <:ResponseFields
+    address::String
+    bathrooms::Union{Int64, Nothing}=nothing
+    country::String
+    distance::String
+    district::String
+    exterior::Bool
+    floor::Union{String, Nothing}=nothing
+    hasVideo::Bool
+    latitude::Number
+    longitude::Number
+    municipality::String
+    neighborhood::Union{String, Nothing}=nothing
+    numPhotos::Int64
+    operation::String
+    price::Number
+    propertyCode::String
+    province::String
+    region::Union{String, Nothing}=nothing
+    rooms::Union{Int64, Nothing}=nothing
+    showAddress::Bool
+    size::Union{Number, Nothing}=nothing
+    subregion::Union{String, Nothing}=nothing
+    thumbnail::String
+    url::String
+    status::Union{String, Nothing}=nothing
+    newDevelopment::Bool
+    tenantGender::Union{String, Nothing}=nothing
+    garageType::Union{String, Nothing}=nothing
+    parkingSpace::Union{ParkingSpace, Nothing}=nothing
+    hasLift::Union{Bool, Nothing}=nothing
+    newDevelopmentFinished::Union{Bool, Nothing}=nothing
+    isSmokingAllowed::Union{Bool, Nothing}=nothing
+    priceByArea::Union{Number, Nothing}=nothing
+    detailedType::DetailedType
+    externalReference::Union{String, Nothing}=nothing
+    description::String
+    suggestedTexts::Dict{String, Any}
+    superTopHighlight::Union{Bool, Nothing}=nothing
+    labels::Union{Vector{Any}, Nothing}=nothing
+    propertyType::Union{String, Nothing}
+    has3DTour::Union{Bool, Nothing}=nothing
+    has360::Union{Bool, Nothing}=nothing
+    hasPlan::Union{Bool, Nothing}=nothing
+    hasStaging::Union{Bool, Nothing}=nothing
+    topNewDevelopment::Union{Bool, Nothing}=nothing
+    tenantNumber::Union{Int64, Nothing}=nothing
+end
+
+@kwdef struct Response <:ResponseFields
+    actualPage::Int64
+    itemsPerPage::Int64
+    lowerRangePosition::Int64
+    paginable::Bool
+    summary::Vector{String}
+    total::Int64
+    totalPages::Int64
+    upperRangePosition::Int64
+    elementList::Vector{Element}
+    alertName::String
+    hiddenResults::Bool
+    numPaginations::Int64
+end
+
+
+

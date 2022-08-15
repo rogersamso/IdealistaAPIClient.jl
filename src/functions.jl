@@ -270,7 +270,10 @@ function search(base_search::Search,
     end
 
     search_fields = validate_search_fields(base_search, property)
-    request_data(token, search_fields)
+    
+    response = request_data(token, search_fields)
+
+    # build_response_objects(response)
 end
 
 
@@ -316,9 +319,34 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 
     search_fields = validate_search_fields(;(;kwargs...)...)
 
-    request_data(token, search_fields)
+    response = request_data(token, search_fields)
+
+    # build_response_objects(response)
+end
+
+
+function build_response_objects(response::Dict{String, Any})
+    response2 = deepcopy(response)
+    elements = pop!(response2, "elementList")
+    
+    new_elements = Vector{IdealistaAPIClient.Element}(undef, length(elements))
+
+    for (num, element) in enumerate(elements)
+        if haskey(element, "parkingSpace")
+            setindex!(element, IdealistaAPIClient.ParkingSpace(;IdealistaAPIClient.stringdict_to_nt(element["parkingSpace"])...), "parkingSpace")
+        end
+        if haskey(element, "detailedType")
+            setindex!(element, IdealistaAPIClient.DetailedType(;IdealistaAPIClient.stringdict_to_nt(element["detailedType"])...), "detailedType")
+        end
+        new_elements[num] = IdealistaAPIClient.Element(;IdealistaAPIClient.stringdict_to_nt(element)...)
+    end
+
+    setindex!(response2, new_elements, "elementList")
+
+    IdealistaAPIClient.Response(;stringdict_to_nt(response2)...)
 
 end
+
 
 
 function validate_search_fields(base_search::Search,
@@ -400,3 +428,16 @@ function request_data(token::AbstractString, search_fields::Dict{String, Any})
         end
     end
 end
+
+
+function stringdict_to_nt(x::Dict{String, T}) where {T}
+    new_dict = Dict{Symbol, T}()
+
+    for (key, val) in x
+        setindex!(new_dict, val, Symbol(key))
+    end
+
+    return (;new_dict...)
+end
+
+
