@@ -659,23 +659,23 @@ Generic response fields for all property types
 In the future there should be diferent types for each property type (i.e. Homes, Offices, Premses, Bedrooms and Garages)
 """
 @kwdef struct Element <:ResponseFields
-    address::String
+    address::Union{String, Nothing}=nothing
     bathrooms::Union{Int64, Nothing}=nothing
     country::String
-    distance::String
-    district::String
-    exterior::Bool
+    distance::Union{String, Nothing}=nothing
+    district::Union{String, Nothing}=nothing
+    exterior::Union{Bool, Nothing}=nothing
     floor::Union{String, Nothing}=nothing
     hasVideo::Bool
     latitude::Number
     longitude::Number
-    municipality::String
+    municipality::Union{String, Nothing}=nothing
     neighborhood::Union{String, Nothing}=nothing
     numPhotos::Int64
     operation::String
     price::Number
     propertyCode::String
-    province::String
+    province::Union{String, Nothing}=nothing
     region::Union{String, Nothing}=nothing
     rooms::Union{Int64, Nothing}=nothing
     showAddress::Bool
@@ -684,7 +684,7 @@ In the future there should be diferent types for each property type (i.e. Homes,
     thumbnail::String
     url::String
     status::Union{String, Nothing}=nothing
-    newDevelopment::Bool
+    newDevelopment::Union{Bool, Nothing}=nothing
     tenantGender::Union{String, Nothing}=nothing
     garageType::Union{String, Nothing}=nothing
     parkingSpace::Union{ParkingSpace, Nothing}=nothing
@@ -692,13 +692,13 @@ In the future there should be diferent types for each property type (i.e. Homes,
     newDevelopmentFinished::Union{Bool, Nothing}=nothing
     isSmokingAllowed::Union{Bool, Nothing}=nothing
     priceByArea::Union{Number, Nothing}=nothing
-    detailedType::DetailedType
+    detailedType::Union{DetailedType, Nothing}=nothing
     externalReference::Union{String, Nothing}=nothing
-    description::String
-    suggestedTexts::Dict{String, Any}
+    description::Union{String, Nothing}=nothing
+    suggestedTexts::Union{Dict{String, Any}, Nothing}=nothing
     superTopHighlight::Union{Bool, Nothing}=nothing
     labels::Union{Vector{Any}, Nothing}=nothing
-    propertyType::Union{String, Nothing}
+    propertyType::Union{String, Nothing}=nothing
     has3DTour::Union{Bool, Nothing}=nothing
     has360::Union{Bool, Nothing}=nothing
     hasPlan::Union{Bool, Nothing}=nothing
