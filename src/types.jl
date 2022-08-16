@@ -1,9 +1,9 @@
-import Base: @kwdef, show # these fields must be in the search fields
+import Base: @kwdef
 
 
 abstract type SearchFields end
 abstract type PropertyFields <: SearchFields end
-
+abstract type ResponseFields end
 """
     Search <: SearchFields
 
@@ -52,7 +52,7 @@ Search(; country::String,
 
 # Examples
 ```jldoctest
-julia>Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+julia> Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
 Search:
 	country => es
 	operation => sale
@@ -116,7 +116,7 @@ Search:
         propertyType ∉ ["homes", "offices", "premises", "garages", "bedrooms"] && throw(DomainError(:propertyType,"propertyType can only take homes, offices, premises, garages or bedrooms"))
         ~isnothing(sort) && ∉(sort, ["asc", "desc"]) && throw(DomainError(:sort, "the sort field can only be set to asc or desc"))
         ~isnothing(sinceDate) && ∉(sinceDate, ["W", "M", "T", "Y"]) && throw(DomainError(:sinceDate, "the sinceDate field only accepts W, M, T, Y"))
-
+        propertyType == "bedrooms" && operation != "rent" && throw(DomainError(:operation, "for bedrooms propertyType, the only possible operation is rent"))
         # TODO should also limit the values of the sort field, depending on the given propertyType field.
 
 
@@ -334,7 +334,6 @@ struct Homes(; minSize::Union{<:Number, Nothing}=nothing,
 
 # Examples
 ```jldoctest
-
 julia> Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
 [ Info: bankOffer only applies in Spain
 Homes:
@@ -477,7 +476,7 @@ Offices(; minSize::Union{<:Number, Nothing}=nothing,
 # Examples
 ```jldoctest
 julia> Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
-[ Info: bankOffer only works in Spain
+[ Info: bankOffer only applies in Spain
 Offices:
 	minSize => 100
 	maxSize => 400
@@ -597,9 +596,162 @@ Bedrooms:
      end
 end
 
-function Base.:show(io::IO, ::MIME"text/plain", s::SearchFields)
-    println(io, "$(typeof(s).name.wrapper):")
-    for fname in fieldnames(typeof(s))
-        println(io, "\t$fname => $(getfield(s, fname))")
-    end
+
+
+"""
+    ParkingSpace <: ResponseFields
+
+A struct that stores the details of parking spaces returned by the Idealista Search API
+
+
+# Constructors
+```julia
+
+ParkingSpace(hasParkingSpace, isParkingSpaceIncludedInPrice, parkingSpacePrice)
+
+ParkingSpace(; hasParkingSpace::Bool,
+               isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing,
+               parkingSpacePrice::Union{Number, Nothing}=nothing)
+
+```
+"""
+@kwdef struct ParkingSpace <:ResponseFields
+    hasParkingSpace::Bool
+    isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing
+    parkingSpacePrice::Union{Number, Nothing}=nothing
 end
+
+
+"""
+    DetailedType <: ResponseFields
+
+A struct that stores the detailed Type of properties returned by the Idealista Search API
+
+
+# Constructors
+```julia
+
+DetailedType(typology, subTypology)
+
+DetailedType(; typology::String,
+               subTypology::Union{String, Nothing}=nothing)
+```
+"""
+@kwdef struct DetailedType <:ResponseFields
+    typology::String
+    subTypology::Union{String, Nothing}=nothing
+end
+
+
+"""
+    Element <: ResponseFields
+
+Generic response fields for all property types
+
+# Notes
+In the future there should be diferent types for each property type (i.e. Homes, Offices, Premses, Bedrooms and Garages)
+"""
+@kwdef struct Element <:ResponseFields
+    address::Union{String, Nothing}=nothing
+    bathrooms::Union{Int64, Nothing}=nothing
+    country::String
+    distance::Union{String, Nothing}=nothing
+    district::Union{String, Nothing}=nothing
+    exterior::Union{Bool, Nothing}=nothing
+    floor::Union{String, Nothing}=nothing
+    hasVideo::Bool
+    latitude::Number
+    longitude::Number
+    municipality::Union{String, Nothing}=nothing
+    neighborhood::Union{String, Nothing}=nothing
+    numPhotos::Int64
+    operation::String
+    price::Number
+    propertyCode::String
+    province::Union{String, Nothing}=nothing
+    region::Union{String, Nothing}=nothing
+    rooms::Union{Int64, Nothing}=nothing
+    showAddress::Bool
+    size::Union{Number, Nothing}=nothing
+    subregion::Union{String, Nothing}=nothing
+    thumbnail::String
+    url::String
+    status::Union{String, Nothing}=nothing
+    newDevelopment::Union{Bool, Nothing}=nothing
+    tenantGender::Union{String, Nothing}=nothing
+    garageType::Union{String, Nothing}=nothing
+    parkingSpace::Union{ParkingSpace, Nothing}=nothing
+    hasLift::Union{Bool, Nothing}=nothing
+    newDevelopmentFinished::Union{Bool, Nothing}=nothing
+    isSmokingAllowed::Union{Bool, Nothing}=nothing
+    priceByArea::Union{Number, Nothing}=nothing
+    detailedType::Union{DetailedType, Nothing}=nothing
+    externalReference::Union{String, Nothing}=nothing
+    description::Union{String, Nothing}=nothing
+    suggestedTexts::Union{Dict{String, Any}, Nothing}=nothing
+    superTopHighlight::Union{Bool, Nothing}=nothing
+    labels::Union{Vector{Any}, Nothing}=nothing
+    propertyType::Union{String, Nothing}=nothing
+    has3DTour::Union{Bool, Nothing}=nothing
+    has360::Union{Bool, Nothing}=nothing
+    hasPlan::Union{Bool, Nothing}=nothing
+    hasStaging::Union{Bool, Nothing}=nothing
+    topNewDevelopment::Union{Bool, Nothing}=nothing
+    tenantNumber::Union{Int64, Nothing}=nothing
+end
+
+
+"""
+    Response <: ResponseFields
+
+A struct that stores the Idealista Search API response fields
+
+
+# Constructors
+```julia
+
+Response(actualPage,
+         itemsPerPage,
+         lowerRangePosition,
+         upperRangePosition,
+         paginable,
+         numPaginations,
+         summary,
+         total,
+         totalPages,
+         elementList,
+         alertName,
+         hiddenResults)
+
+
+Response(; actualPage::Int64,
+           itemsPerPage::Int64,
+           lowerRangePosition::Int64,
+           upperRangePosition::Int64,
+           paginable::Bool,
+           numPaginations::Int64,
+           summary::Vector{String},
+           total::Int64,
+           totalPages::Int64,
+           elementList::Vector{Element},
+           alertName::String,
+           hiddenResults::Bool)
+
+```
+"""
+@kwdef struct Response <:ResponseFields
+    actualPage::Int64
+    itemsPerPage::Int64
+    lowerRangePosition::Int64
+    upperRangePosition::Int64
+    paginable::Bool
+    numPaginations::Int64
+    summary::Vector{String}
+    total::Int64
+    totalPages::Int64
+    elementList::Vector{Element}
+    alertName::String
+    hiddenResults::Bool
+end
+
+

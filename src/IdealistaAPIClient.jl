@@ -12,6 +12,7 @@ export
     get_token,
     search,
     valid_fields,
+    process_response,
     Search,
     Garages,
     Premises,
@@ -20,6 +21,7 @@ export
     Bedrooms
 
 include("types.jl")
+include("utils.jl")
 include("functions.jl")
 
 

@@ -67,6 +67,13 @@ using IdealistaAPIClient
                                     center="42.3,-3.7",
                                     distance=15000,
                                     sinceDate="forever")
+    
+    # bedrooms and sale don't mix well
+    @test_throws DomainError Search(country="es",
+                                    center="40.430,-3.702",
+                                    propertyType="bedrooms",
+                                    distance=15000,
+                                    operation="sale")
 end
 
 @testset "Garages type" begin

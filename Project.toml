@@ -1,7 +1,7 @@
 name = "IdealistaAPIClient"
 uuid = "5722b1ce-14da-11ed-06c6-d930f2b72c9a"
 authors = ["Roger Samsó <r.samso@proton.me>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"

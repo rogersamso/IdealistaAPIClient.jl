@@ -1,4 +1,5 @@
 using Base: exit
+using IdealistaAPIClient: Response, Element, ParkingSpace, DetailedType
 
 """
     valid_fields(T::Type; indent::Int=0)
@@ -127,11 +128,6 @@ function valid_fields(;indent::Int=1)
         println(T)
         valid_fields(T, indent=indent)
     end
-end
-
-function struct_to_dict(s)
-    Dict(String(key)=>getfield(s, key) for key ∈ fieldnames(typeof(s))
-                if ~isnothing(getfield(s, key)))
 end
 
 
@@ -270,7 +266,9 @@ function search(base_search::Search,
     end
 
     search_fields = validate_search_fields(base_search, property)
-    request_data(token, search_fields)
+    
+    response = request_data(token, search_fields)
+
 end
 
 
@@ -316,7 +314,42 @@ function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
 
     search_fields = validate_search_fields(;(;kwargs...)...)
 
-    request_data(token, search_fields)
+    response = request_data(token, search_fields)
+
+end
+
+
+"""
+    process_response(response)
+
+Process the response of the Idealista Search API
+
+Goes through the dictionary of the parsed Idealista Search API response and instantiates a Response object
+
+# Examples
+
+"""
+function process_response(response::Dict{String, Any})::Response
+    
+    resp_cp = deepcopy(response)
+    
+    elements = pop!(resp_cp, "elementList")
+    
+    new_elements = Vector{Element}(undef, length(elements))
+
+    for (num, element) in enumerate(elements)
+        if haskey(element, "parkingSpace")
+            setindex!(element, ParkingSpace(;stringdict_to_nt(element["parkingSpace"])...), "parkingSpace")
+        end
+        if haskey(element, "detailedType")
+            setindex!(element, DetailedType(;stringdict_to_nt(element["detailedType"])...), "detailedType")
+        end
+        new_elements[num] = Element(;stringdict_to_nt(element)...)
+    end
+
+    setindex!(resp_cp, new_elements, "elementList")
+
+    Response(;stringdict_to_nt(resp_cp)...)
 
 end
 
@@ -400,3 +433,7 @@ function request_data(token::AbstractString, search_fields::Dict{String, Any})
         end
     end
 end
+
+
+
+

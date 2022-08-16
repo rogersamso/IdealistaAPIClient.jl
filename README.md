@@ -41,7 +41,7 @@ valid_fields()
 # define search fields
 search_fields = (country="es", center="40.430,-3.702", propertyType="homes", distance=15000, operation="sale", bedrooms="1,2,3,4", swimmingPool=true)
 
-response_body = search(;search_fields...)
+search(;search_fields...) |> process_response
 
 ```
 

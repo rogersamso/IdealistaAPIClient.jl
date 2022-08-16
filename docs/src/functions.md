@@ -9,17 +9,7 @@ CurrentModule = IdealistaAPIClient
 Pages = ["functions.md"]
 ```
 
-## Valid fields
-```@docs
-valid_fields
-```
-
-## Generating a token
-```@docs
-get_token
-```
-
-## Performing property searches
-```@docs
-search
+```@autodocs
+Modules = [IdealistaAPIClient]
+Order   = [:function]
 ```
