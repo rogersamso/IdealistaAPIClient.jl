@@ -9,7 +9,7 @@ It was tested with v3.5 of the Search API.
 
 ## Warning
 
-This package is under development, so use it with caution. According to the previous, the package is not yet in the [julia Registry](https://github.com/JuliaRegistries/General).
+This package is under development, so use it with caution. 
 
 ## Requirements
 
@@ -25,7 +25,7 @@ At the Julia REPL:
 ```julia
 using Pkg
 
-Pkg.add(url="https://github.com/rogersamso/IdealistaAPIClient.jl")
+Pkg.add("IdealistaAPIClient")
 
 ```
 

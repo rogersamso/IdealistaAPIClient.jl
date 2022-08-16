@@ -5,7 +5,7 @@ At the Julia REPL:
 ```julia
 using Pkg 
 
-Pkg.add(url="https://github.com/rogersamso/IdealistaAPIClient.jl")
+Pkg.add("IdealistaAPIClient")
 
 ```
 
