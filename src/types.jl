@@ -1,4 +1,4 @@
-import Base: @kwdef, show # these fields must be in the search fields
+import Base: @kwdef
 
 
 abstract type SearchFields end
@@ -755,35 +755,3 @@ Response(; actualPage::Int64,
 end
 
 
-function Base.show(io::IO, s::SearchFields)
-    println(io, "$(repr(typeof(s))):")
-    for fname in fieldnames(typeof(s))
-        println(io, "\t$fname => $(getfield(s, fname))")
-    end
-end
-
-
-function Base.show(io::IO, r::Response)
-    
-    for fname in fieldnames(typeof(r))
-        if fname != :elementList
-            println(io, "\t$fname: $(getfield(r, fname))")
-        end
-    end
-
-    println(io, "\n\nFound $(length(r.elementList)) properties:\n")
-
-    for element in r.elementList
-        print(io, element)
-        println(io, "\n\n\n")
-    end
-end
- 
-
-function Base.show(io::IO, e::Element)
-    for fname in fieldnames(typeof(e))
-        if getfield(e, fname) != nothing
-            println(io, "\t$fname: $(getfield(e, fname))")
-        end
-    end
-end

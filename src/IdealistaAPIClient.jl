@@ -20,8 +20,8 @@ export
     Offices,
     Bedrooms
 
-include("utils.jl")
 include("types.jl")
+include("utils.jl")
 include("functions.jl")
 
 
