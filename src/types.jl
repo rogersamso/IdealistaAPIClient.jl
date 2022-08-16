@@ -52,7 +52,7 @@ Search(; country::String,
 
 # Examples
 ```jldoctest
-julia>Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
+julia> Search("es", "sale", "homes", "42.0,-3.7", 15000, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
 Search:
 	country => es
 	operation => sale
@@ -334,7 +334,6 @@ struct Homes(; minSize::Union{<:Number, Nothing}=nothing,
 
 # Examples
 ```jldoctest
-
 julia> Homes(65, 130, false, true, true, true, true, true, true, "1,2,3,4", "1,2", "good", true, "furnished", false, true, true, false, false, false, false, false, false, true, "independantHouse")
 [ Info: bankOffer only applies in Spain
 Homes:
@@ -477,7 +476,7 @@ Offices(; minSize::Union{<:Number, Nothing}=nothing,
 # Examples
 ```jldoctest
 julia> Offices(100, 400, "withWalls", "exclusive", false, true, true, true, true, false, false, false)
-[ Info: bankOffer only works in Spain
+[ Info: bankOffer only applies in Spain
 Offices:
 	minSize => 100
 	maxSize => 400
