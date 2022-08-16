@@ -330,8 +330,10 @@ Goes through the dictionary of the parsed Idealista Search API response and inst
 
 """
 function process_response(response::Dict{String, Any})::Response
-    response2 = deepcopy(response)
-    elements = pop!(response2, "elementList")
+    
+    resp_cp = deepcopy(response)
+    
+    elements = pop!(resp_cp, "elementList")
     
     new_elements = Vector{Element}(undef, length(elements))
 
@@ -345,9 +347,9 @@ function process_response(response::Dict{String, Any})::Response
         new_elements[num] = Element(;stringdict_to_nt(element)...)
     end
 
-    setindex!(response2, new_elements, "elementList")
+    setindex!(resp_cp, new_elements, "elementList")
 
-    Response(;stringdict_to_nt(response2)...)
+    Response(;stringdict_to_nt(resp_cp)...)
 
 end
 
