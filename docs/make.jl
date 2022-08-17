@@ -20,5 +20,5 @@ makedocs(sitename="IdealistaAPIClient.jl",
 
 deploydocs(
            repo="github.com/rogersamso/IdealistaAPIClient.jl.git",
-           devbranch="main",
+           devbranch="dev",
           )
