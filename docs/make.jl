@@ -7,7 +7,7 @@ makedocs(sitename="IdealistaAPIClient.jl",
          authors="Roger Samsó <r.samso@proton.me>",
          format=Documenter.HTML(
                                 prettyurls=get(ENV, "CI", nothing) == "true",
-                                canonical="https://rogersamso.github.io/IdealistaAPIClient.jl/stable",
+                                canonical="https://rogersamso.github.io/IdealistaAPIClient.jl/stable/",
                                 assets=String[],
                                ),
          pages = [

@@ -3,6 +3,7 @@
 [![Build status (Github Actions)](https://github.com/rogersamso/IdealistaAPIClient.jl/workflows/CI/badge.svg)](https://github.com/rogersamso/IdealistaAPIClient.jl/actions)
 [![codecov.io](http://codecov.io/github/rogersamso/IdealistaAPIClient.jl/coverage.svg?branch=main)](http://codecov.io/github/rogersamso/IdealistaAPIClient.jl?branch=main)
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://rogersamso.github.io/IdealistaAPIClient.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://rogersamso.github.io/IdealistaAPIClient.jl/dev)
 
 Simple Julia client for the [Idealista](https://idealista.com) [Search API](https://developers.idealista.com/access-request).
 
