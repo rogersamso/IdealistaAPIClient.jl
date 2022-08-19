@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Functions · IdealistaAPIClient.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link rel="canonical" href="https://rogersamso.github.io/IdealistaAPIClient.jl/stable/functions/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">IdealistaAPIClient.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../usage/">Usage</a></li><li><span class="tocitem">API</span><ul><li><a class="tocitem" href="../types/">Types</a></li><li class="is-active"><a class="tocitem" href>Functions</a><ul class="internal"><li><a class="tocitem" href="#Index"><span>Index</span></a></li></ul></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API</a></li><li class="is-active"><a href>Functions</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Functions</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/main/docs/src/functions.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Functions"><a class="docs-heading-anchor" href="#Functions">Functions</a><a id="Functions-1"></a><a class="docs-heading-anchor-permalink" href="#Functions" title="Permalink"></a></h1><h2 id="Index"><a class="docs-heading-anchor" href="#Index">Index</a><a id="Index-1"></a><a class="docs-heading-anchor-permalink" href="#Index" title="Permalink"></a></h2><ul><li><a href="#IdealistaAPIClient.get_token-Tuple{}"><code>IdealistaAPIClient.get_token</code></a></li><li><a href="#IdealistaAPIClient.process_response-Tuple{Dict{String, Any}}"><code>IdealistaAPIClient.process_response</code></a></li><li><a href="#IdealistaAPIClient.search"><code>IdealistaAPIClient.search</code></a></li><li><a href="#IdealistaAPIClient.search-Tuple{}"><code>IdealistaAPIClient.search</code></a></li><li><a href="#IdealistaAPIClient.stringdict_to_nt-Union{Tuple{Dict{String, T}}, Tuple{T}} where T"><code>IdealistaAPIClient.stringdict_to_nt</code></a></li><li><a href="#IdealistaAPIClient.valid_fields-Tuple{}"><code>IdealistaAPIClient.valid_fields</code></a></li><li><a href="#IdealistaAPIClient.valid_fields-Tuple{Type}"><code>IdealistaAPIClient.valid_fields</code></a></li></ul><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.get_token-Tuple{}" href="#IdealistaAPIClient.get_token-Tuple{}"><code>IdealistaAPIClient.get_token</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">get_token()</code></pre><p>Return Idealista Search API parsed response for token request</p><p><strong>Notes</strong></p><p>APIKEY and SECRET must be defined as environmental variables. Generated tokens get cached in tempdir, and any new calls to the get_token function before the expiration date will return the cached value</p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt;get_token()
+[ Info: Getting new access token
+Dict{String, Any} with 5 entries:
+  &quot;access_token&quot; =&gt; &quot;token_value&quot;
+  &quot;token_type&quot;   =&gt; &quot;bearer&quot;
+  &quot;scope&quot;        =&gt; &quot;read&quot;
+  &quot;expires_in&quot;   =&gt; DateTime(&quot;2022-08-14T03:07:24.573&quot;)
+  &quot;jti&quot;          =&gt; &quot;jti_value&quot;
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L154-L177">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.process_response-Tuple{Dict{String, Any}}" href="#IdealistaAPIClient.process_response-Tuple{Dict{String, Any}}"><code>IdealistaAPIClient.process_response</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">process_response(response)</code></pre><p>Process the response of the Idealista Search API</p><p>Goes through the dictionary of the parsed Idealista Search API response and instantiates a Response object</p><p><strong>Examples</strong></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L330-L339">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.search" href="#IdealistaAPIClient.search"><code>IdealistaAPIClient.search</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">search(base_search::Search, property::Union{&lt;:PropertySearchFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)</code></pre><p>Perform a search in the Idealista Search API</p><p>This method uses Search and property types instances as arguments</p><p><strong>Arguments</strong></p><ul><li><code>base_search</code>: Search object</li><li><code>property</code>: Homes, Premises, Garages, Bedrooms or Offices object</li></ul><p><strong>Keyword Argyments</strong></p><ul><li><code>token_d</code>: Dict containing the API response for a token request</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt;search(Search(country=&quot;es&quot;, center=&quot;40.430,-3.702&quot;, propertyType=&quot;homes&quot;, distance=15000, operation=&quot;sale&quot;), Homes(bedrooms=&quot;1,2,3,4&quot;, swimmingPool=true))
+[ Info: Getting new access token
+Dict{String, Any} with 12 entries:
+  &quot;hiddenResults&quot;      =&gt; false
+  &quot;itemsPerPage&quot;       =&gt; 20
+  &quot;upperRangePosition&quot; =&gt; 20
+  &quot;totalPages&quot;         =&gt; 206
+  &quot;paginable&quot;          =&gt; true
+  &quot;summary&quot;            =&gt; Any[&quot;Comprar&quot;, &quot;Viviendas&quot;, &quot;barrio Trafalgar, Madrid&quot;, &quot;Todos los…
+  &quot;total&quot;              =&gt; 4118
+  &quot;lowerRangePosition&quot; =&gt; 0
+  &quot;alertName&quot;          =&gt; &quot;Viviendas en barrio Trafalgar, Madrid&quot;
+  &quot;elementList&quot;        =&gt; Any[Dict{String, Any}(&quot;rooms&quot;=&gt;6, &quot;propertyCode&quot;=&gt;&quot;98324891&quot;, &quot;num…
+  &quot;numPaginations&quot;     =&gt; 0
+  &quot;actualPage&quot;         =&gt; 1
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L228-L261">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.search-Tuple{}" href="#IdealistaAPIClient.search-Tuple{}"><code>IdealistaAPIClient.search</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">search(base_search::Search, property::Union{&lt;:PropertySearchFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)</code></pre><p>Perform a search in the Idealista Search API</p><p>This method uses keyword arguments corresponding to valid search fields of the Idealista Search API</p><p><strong>Keyword Argyments</strong></p><ul><li><code>token_d</code>: Dict containing the API response for a token request</li><li><code>kwargs</code>: search fields of the Idealista Search API</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt;search(country=&quot;es&quot;, center=&quot;40.430,-3.702&quot;, propertyType=&quot;homes&quot;, distance=15000, operation=&quot;sale&quot;, bedrooms=&quot;1,2,3,4&quot;, swimmingPool=true)
+[ Info: Getting new access token
+Dict{String, Any} with 12 entries:
+  &quot;hiddenResults&quot;      =&gt; false
+  &quot;itemsPerPage&quot;       =&gt; 20
+  &quot;upperRangePosition&quot; =&gt; 20
+  &quot;totalPages&quot;         =&gt; 206
+  &quot;paginable&quot;          =&gt; true
+  &quot;summary&quot;            =&gt; Any[&quot;Comprar&quot;, &quot;Viviendas&quot;, &quot;barrio Trafalgar, Madrid&quot;, &quot;Todos los…
+  &quot;total&quot;              =&gt; 4118
+  &quot;lowerRangePosition&quot; =&gt; 0
+  &quot;alertName&quot;          =&gt; &quot;Viviendas en barrio Trafalgar, Madrid&quot;
+  &quot;elementList&quot;        =&gt; Any[Dict{String, Any}(&quot;rooms&quot;=&gt;6, &quot;propertyCode&quot;=&gt;&quot;98324891&quot;, &quot;num…
+  &quot;numPaginations&quot;     =&gt; 0
+  &quot;actualPage&quot;         =&gt; 1
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L283-L313">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.stringdict_to_nt-Union{Tuple{Dict{String, T}}, Tuple{T}} where T" href="#IdealistaAPIClient.stringdict_to_nt-Union{Tuple{Dict{String, T}}, Tuple{T}} where T"><code>IdealistaAPIClient.stringdict_to_nt</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">stringdict_to_nt(::Dict{String, T})</code></pre><p>Convert a Dict with String keys into a NamedTuple</p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">d = Dict(&quot;a&quot;=&gt;2, &quot;b&quot;=&gt;3)
+
+stringdict_to_nt(d)
+(a=2, b=3)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/utils.jl#L3-L16">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.valid_fields-Tuple{Type}" href="#IdealistaAPIClient.valid_fields-Tuple{Type}"><code>IdealistaAPIClient.valid_fields</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">valid_fields(T::Type; indent::Int=0)</code></pre><p>Print fieldnames of type T</p><p>Prints fieldnames of the passed type to standard output</p><p><strong>Keyword Arguments</strong></p><ul><li>indent: number of tabs of indentation</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt;valid_fields(Garages)
+bankOffer
+automaticDoor
+motorcycleParking
+security
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L4-L23">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.valid_fields-Tuple{}" href="#IdealistaAPIClient.valid_fields-Tuple{}"><code>IdealistaAPIClient.valid_fields</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">valid_fields(;indent::Int=1)</code></pre><p>Prints fieldnames of all SearchFields subtypes</p><p>Prints to stdout names and fieldnames of subtypes of SearchFields</p><p><strong>Keyword Arguments</strong></p><ul><li>indent: number of tabs of indentation</li></ul><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt;valid_fields()
+Search
+	country
+	operation
+	propertyType
+	center
+	distance
+	locationId
+	maxItems
+	numPage
+	maxPrice
+	minPrice
+	sinceDate
+	order
+	sort
+	adIds
+	hasMultimedia
+Bedrooms
+	housemates
+	smokePolicy
+	petsPolicy
+	gayPartners
+	newGender
+Garages
+	bankOffer
+	automaticDoor
+	motorcycleParking
+	security
+Homes
+	minSize
+	maxSize
+	virtualTour
+	flat
+	penthouse
+	duplex
+	studio
+	chalet
+	countryHouse
+	bedrooms
+	bathrooms
+	preservation
+	newDevelopment
+	furnished
+	bankOffer
+	garage
+	terrace
+	exterior
+	elevator
+	swimmingPool
+	airConditioning
+	storeRoom
+	clotheslineSpace
+	builtinWardrobes
+	subTypology
+Offices
+	minSize
+	maxSize
+	layout
+	buildingType
+	garage
+	hotWater
+	heating
+	elevator
+	airConditioning
+	security
+	exterior
+	bankOffer
+Premises
+	minSize
+	maxSize
+	virtualTour
+	location
+	corner
+	airConditioning
+	smokeVentilation
+	heating
+	transfer
+	buildingTypes
+	bankOffer
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/functions.jl#L31-L124">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../types/">« Types</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.22 on <span class="colophon-date" title="Friday 19 August 2022 19:16">Friday 19 August 2022</span>. Using Julia version 1.8.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

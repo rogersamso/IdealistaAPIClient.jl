@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Types · IdealistaAPIClient.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link rel="canonical" href="https://rogersamso.github.io/IdealistaAPIClient.jl/stable/types/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">IdealistaAPIClient.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../usage/">Usage</a></li><li><span class="tocitem">API</span><ul><li class="is-active"><a class="tocitem" href>Types</a><ul class="internal"><li><a class="tocitem" href="#Types-specification"><span>Types specification</span></a></li></ul></li><li><a class="tocitem" href="../functions/">Functions</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">API</a></li><li class="is-active"><a href>Types</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Types</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/main/docs/src/types.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><ul><li><a href="#IdealistaAPIClient.Bedrooms"><code>IdealistaAPIClient.Bedrooms</code></a></li><li><a href="#IdealistaAPIClient.DetailedType"><code>IdealistaAPIClient.DetailedType</code></a></li><li><a href="#IdealistaAPIClient.Element"><code>IdealistaAPIClient.Element</code></a></li><li><a href="#IdealistaAPIClient.Garages"><code>IdealistaAPIClient.Garages</code></a></li><li><a href="#IdealistaAPIClient.Homes"><code>IdealistaAPIClient.Homes</code></a></li><li><a href="#IdealistaAPIClient.Offices"><code>IdealistaAPIClient.Offices</code></a></li><li><a href="#IdealistaAPIClient.ParkingSpace"><code>IdealistaAPIClient.ParkingSpace</code></a></li><li><a href="#IdealistaAPIClient.Premises"><code>IdealistaAPIClient.Premises</code></a></li><li><a href="#IdealistaAPIClient.Response"><code>IdealistaAPIClient.Response</code></a></li><li><a href="#IdealistaAPIClient.Search"><code>IdealistaAPIClient.Search</code></a></li></ul><h2 id="Types-specification"><a class="docs-heading-anchor" href="#Types-specification">Types specification</a><a id="Types-specification-1"></a><a class="docs-heading-anchor-permalink" href="#Types-specification" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Bedrooms" href="#IdealistaAPIClient.Bedrooms"><code>IdealistaAPIClient.Bedrooms</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Bedrooms &lt;: PropertySearchFields</code></pre><p>A struct that stores the bedrooms specific search fields</p><p>Each field represents a valid bedrooms search field for the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Bedrooms(housemates,
+         smokePolicy,
+         petsPolicy,gayPartners,
+         newGender)
+
+Bedrooms(; housemates::Union{&lt;:AbstractString, Nothing}=nothing,
+           smokePolicy::Union{&lt;:AbstractString, Nothing}=nothing,
+           petsPolicy::Union{&lt;:AbstractString, Nothing}=nothing,
+           gayPartners::Union{Bool, Nothing}=nothing,
+           newGender::Union{&lt;:AbstractString, Nothing}=nothing)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Bedrooms(&quot;2,4&quot;, &quot;disallowed&quot;, &quot;disallowed&quot;, true, &quot;male&quot;)
+Bedrooms:
+	housemates =&gt; 2,4
+	smokePolicy =&gt; disallowed
+	petsPolicy =&gt; disallowed
+	gayPartners =&gt; true
+	newGender =&gt; male
+
+julia&gt; Bedrooms(housemates=&quot;2,4&quot;, smokePolicy=&quot;disallowed&quot;, petsPolicy=&quot;disallowed&quot;, gayPartners=true, newGender=&quot;male&quot;)
+Bedrooms:
+	housemates =&gt; 2,4
+	smokePolicy =&gt; disallowed
+	petsPolicy =&gt; disallowed
+	gayPartners =&gt; true
+	newGender =&gt; male</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L846-L886">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.DetailedType" href="#IdealistaAPIClient.DetailedType"><code>IdealistaAPIClient.DetailedType</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">DetailedType &lt;: ResponseFields</code></pre><p>A struct that stores the detailed Type of properties returned by the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+DetailedType(typology, subTypology)
+
+DetailedType(; typology::String,
+               subTypology::Union{String, Nothing}=nothing)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L955-L969">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Element" href="#IdealistaAPIClient.Element"><code>IdealistaAPIClient.Element</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Element &lt;: ResponseFields</code></pre><p>Generic response fields for all property types</p><p><strong>Notes</strong></p><p>In the future there should be diferent types for each property type (i.e. Homes, Offices, Premses, Bedrooms and Garages)</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L976-L983">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Garages" href="#IdealistaAPIClient.Garages"><code>IdealistaAPIClient.Garages</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Garages &lt;: PropertySearchFields</code></pre><p>A struct that stores the garage specific search fields</p><p>Each field represents a valid garages search field for the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Garages(bankOffer, automaticDoor, motorcycleParking, security)
+
+Garages(; bankOffer::Union{Bool, Nothing}=nothing,
+          automaticDoor::Union{Bool, Nothing}=nothing,
+          motorcycleParking::Union{Bool, Nothing}=nothing,
+          security::Union{Bool, Nothing}=nothing)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Garages(nothing, true, true, false)
+Garages:
+	bankOffer =&gt; nothing
+	automaticDoor =&gt; true
+	motorcycleParking =&gt; true
+	security =&gt; false
+
+julia&gt; Garages(automaticDoor=true, security=true)
+Garages:
+	bankOffer =&gt; nothing
+	automaticDoor =&gt; true
+	motorcycleParking =&gt; nothing
+	security =&gt; true</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L253-L287">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Homes" href="#IdealistaAPIClient.Homes"><code>IdealistaAPIClient.Homes</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Homes &lt;: PropertySearchFields</code></pre><p>A struct that stores the homes specific search fields</p><p>Each field represents a valid homes search field for the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Homes(minSize,
+      maxSize,
+      virtualTour,
+      flat,
+      penthouse,
+      duplex,
+      studio,
+      chalet,
+      countryHouse,
+      bedrooms,
+      bathrooms,
+      preservation,
+      newDevelopment,
+      furnished,
+      bankOffer,
+      garage,
+      terrace,
+      exterior,
+      elevator,
+      swimmingPool,
+      airConditioning,
+      storeRoom,
+      clotheslineSpace,
+      builtinWardrobes,
+      subTypology)
+
+struct Homes(; minSize::Union{&lt;:Number, Nothing}=nothing,
+               maxSize::Union{&lt;:Number, Nothing}=nothing,
+               virtualTour::Union{Bool, Nothing}=nothing,
+               flat::Union{Bool, Nothing}=nothing,
+               penthouse::Union{Bool, Nothing}=nothing,
+               duplex::Union{Bool, Nothing}=nothing,
+               studio::Union{Bool, Nothing}=nothing,
+               chalet::Union{Bool, Nothing}=nothing,
+               countryHouse::Union{Bool, Nothing}=nothing,
+               bedrooms::Union{&lt;:AbstractString, Nothing}=nothing,
+               bathrooms::Union{&lt;:AbstractString, Nothing}=nothing,
+               preservation::Union{&lt;:AbstractString, Nothing}=nothing,
+               newDevelopment::Union{Bool, Nothing}=nothing,
+               furnished::Union{&lt;:AbstractString, Nothing}=nothing,
+               bankOffer::Union{Bool, Nothing}=nothing,
+               garage::Union{Bool, Nothing}=nothing,
+               terrace::Union{Bool, Nothing}=nothing,
+               exterior::Union{Bool, Nothing}=nothing,
+               elevator::Union{Bool, Nothing}=nothing,
+               swimmingPool::Union{Bool, Nothing}=nothing,
+               airConditioning::Union{Bool, Nothing}=nothing,
+               storeRoom::Union{Bool, Nothing}=nothing,
+               clotheslineSpace::Union{Bool, Nothing}=nothing,
+               builtinWardrobes::Union{Bool, Nothing}=nothing,
+               subTypology::Union{&lt;:AbstractString, Nothing}=nothing)
+</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Homes(65, 130, false, true, true, true, true, true, true, &quot;1,2,3,4&quot;, &quot;1,2&quot;, &quot;good&quot;, true, &quot;furnished&quot;, false, true, true, false, false, false, false, false, false, true, &quot;independantHouse&quot;)
+[ Info: bankOffer only applies in Spain
+Homes:
+	minSize =&gt; 65
+	maxSize =&gt; 130
+	virtualTour =&gt; false
+	flat =&gt; true
+	penthouse =&gt; true
+	duplex =&gt; true
+	studio =&gt; true
+	chalet =&gt; true
+	countryHouse =&gt; true
+	bedrooms =&gt; 1,2,3,4
+	bathrooms =&gt; 1,2
+	preservation =&gt; good
+	newDevelopment =&gt; true
+	furnished =&gt; furnished
+	bankOffer =&gt; false
+	garage =&gt; true
+	terrace =&gt; true
+	exterior =&gt; false
+	elevator =&gt; false
+	swimmingPool =&gt; false
+	airConditioning =&gt; false
+	storeRoom =&gt; false
+	clotheslineSpace =&gt; false
+	builtinWardrobes =&gt; true
+	subTypology =&gt; independantHouse
+
+
+julia&gt; Homes(minSize=70, swimmingPool=false, preservation=&quot;renew&quot;, subTypology=&quot;terracedHouse&quot;)
+Homes:
+	minSize =&gt; 70
+	maxSize =&gt; nothing
+	virtualTour =&gt; nothing
+	flat =&gt; nothing
+	penthouse =&gt; nothing
+	duplex =&gt; nothing
+	studio =&gt; nothing
+	chalet =&gt; nothing
+	countryHouse =&gt; nothing
+	bedrooms =&gt; nothing
+	bathrooms =&gt; nothing
+	preservation =&gt; renew
+	newDevelopment =&gt; nothing
+	furnished =&gt; nothing
+	bankOffer =&gt; nothing
+	garage =&gt; nothing
+	terrace =&gt; nothing
+	exterior =&gt; nothing
+	elevator =&gt; nothing
+	swimmingPool =&gt; false
+	airConditioning =&gt; nothing
+	storeRoom =&gt; nothing
+	clotheslineSpace =&gt; nothing
+	builtinWardrobes =&gt; nothing
+	subTypology =&gt; terracedHouse</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L443-L567">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Offices" href="#IdealistaAPIClient.Offices"><code>IdealistaAPIClient.Offices</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Offices &lt;: PropertySearchFields</code></pre><p>A struct that stores the office specific search fields</p><p>Each field represents a valid offices search field for the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Offices(minSize,
+        maxSize,
+        layout,
+        buildingType,
+        garage,
+        hotWater,
+        heating,
+        elevator,
+        airConditioning,
+        security,
+        exterior,
+        bankOffer)
+
+Offices(; minSize::Union{&lt;:Number, Nothing}=nothing,
+          maxSize::Union{&lt;:Number, Nothing}=nothing,
+          layout::Union{&lt;:AbstractString, Nothing}=nothing,
+          buildingType::Union{&lt;:AbstractString, Nothing}=nothing,
+          garage::Union{Bool, Nothing}=nothing,
+          hotWater::Union{Bool, Nothing}=nothing,
+          heating::Union{Bool, Nothing}=nothing,
+          elevator::Union{Bool, Nothing}=nothing,
+          airConditioning::Union{Bool, Nothing}=nothing,
+          security::Union{Bool, Nothing}=nothing,
+          exterior::Union{Bool, Nothing}=nothing,
+          bankOffer::Union{Bool, Nothing}=nothing)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Offices(100, 400, &quot;withWalls&quot;, &quot;exclusive&quot;, false, true, true, true, true, false, false, false)
+[ Info: bankOffer only applies in Spain
+Offices:
+	minSize =&gt; 100
+	maxSize =&gt; 400
+	layout =&gt; withWalls
+	buildingType =&gt; exclusive
+	garage =&gt; false
+	hotWater =&gt; true
+	heating =&gt; true
+	elevator =&gt; true
+	airConditioning =&gt; true
+	security =&gt; false
+	exterior =&gt; false
+	bankOffer =&gt; false
+
+
+julia&gt; Offices(minSize=100, maxSize=400, layout=&quot;withWalls&quot;, buildingType=&quot;exclusive&quot;)
+Offices:
+	minSize =&gt; 100
+	maxSize =&gt; 400
+	layout =&gt; withWalls
+	buildingType =&gt; exclusive
+	garage =&gt; nothing
+	hotWater =&gt; nothing
+	heating =&gt; nothing
+	elevator =&gt; nothing
+	airConditioning =&gt; nothing
+	security =&gt; nothing
+	exterior =&gt; nothing
+	bankOffer =&gt; nothing</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L704-L775">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.ParkingSpace" href="#IdealistaAPIClient.ParkingSpace"><code>IdealistaAPIClient.ParkingSpace</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">ParkingSpace &lt;: ResponseFields</code></pre><p>A struct that stores the details of parking spaces returned by the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+ParkingSpace(hasParkingSpace, isParkingSpaceIncludedInPrice, parkingSpacePrice)
+
+ParkingSpace(; hasParkingSpace::Bool,
+               isParkingSpaceIncludedInPrice::Union{Bool, Nothing}=nothing,
+               parkingSpacePrice::Union{Number, Nothing}=nothing)
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L931-L947">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Premises" href="#IdealistaAPIClient.Premises"><code>IdealistaAPIClient.Premises</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Premises &lt;: PropertySearchFields</code></pre><p>A struct that stores the premises specific search fields</p><p>Each field represents a valid premises search field for the Idealista Search API</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Premises(minSize,
+         maxSize,
+         virtualTour,
+         location,
+         corner,
+         airConditioning,
+         smokeVentilation,
+         heating,
+         transfer,
+         buildingTypes,
+         bankOffer)
+
+Premises(; minSize::Union{&lt;:Number, Nothing}=nothing,
+           maxSize::Union{&lt;:Number, Nothing}=nothing,
+           virtualTour::Union{Bool, Nothing}=nothing,
+           location::Union{&lt;:AbstractString, Nothing}=nothing,
+           corner::Union{Bool, Nothing}=nothing,
+           airConditioning::Union{Bool, Nothing}=nothing,
+           smokeVentilation::Union{Bool, Nothing}=nothing,
+           heating::Union{Bool, Nothing}=nothing,
+           transfer::Union{Bool, Nothing}=nothing,
+           buildingTypes::Union{&lt;:AbstractString, Nothing}=nothing,
+           bankOffer::Union{Bool, Nothing}=nothing)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Premises(70, 120, false, &quot;shoppingcenter&quot;, false, true, false, true, false, &quot;industrialBuilding&quot;, false)
+[ Info: bankOffer only applies in Spain
+Premises:
+	minSize =&gt; 70
+	maxSize =&gt; 120
+	virtualTour =&gt; false
+	location =&gt; shoppingcenter
+	corner =&gt; false
+	airConditioning =&gt; true
+	smokeVentilation =&gt; false
+	heating =&gt; true
+	transfer =&gt; false
+	buildingTypes =&gt; industrialBuilding
+	bankOffer =&gt; false
+
+julia&gt; Premises(minSize=70, maxSize=120, transfer=false, location=&quot;shoppingcenter&quot;)
+Premises:
+	minSize =&gt; 70
+	maxSize =&gt; 120
+	virtualTour =&gt; nothing
+	location =&gt; shoppingcenter
+	corner =&gt; nothing
+	airConditioning =&gt; nothing
+	smokeVentilation =&gt; nothing
+	heating =&gt; nothing
+	transfer =&gt; false
+	buildingTypes =&gt; nothing
+	bankOffer =&gt; nothing</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L303-L369">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Response" href="#IdealistaAPIClient.Response"><code>IdealistaAPIClient.Response</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Response &lt;: ResponseFields</code></pre><p>A struct that stores the Idealista Search API response fields</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Response(actualPage,
+         itemsPerPage,
+         lowerRangePosition,
+         upperRangePosition,
+         paginable,
+         numPaginations,
+         summary,
+         total,
+         totalPages,
+         elementList,
+         alertName,
+         hiddenResults)
+
+
+Response(; actualPage::Int64,
+           itemsPerPage::Int64,
+           lowerRangePosition::Int64,
+           upperRangePosition::Int64,
+           paginable::Bool,
+           numPaginations::Int64,
+           summary::Vector{String},
+           total::Int64,
+           totalPages::Int64,
+           elementList::Vector{Element},
+           alertName::String,
+           hiddenResults::Bool)
+</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L1034-L1071">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="IdealistaAPIClient.Search" href="#IdealistaAPIClient.Search"><code>IdealistaAPIClient.Search</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">Search &lt;: SearchFields</code></pre><p>A struct that stores the basic (non-property-type specific) search fields of the Idealista Search API</p><p>Each field represents a valid base search field for the Idealista Search API. The country, operation, propertyType and center + distance or center + locationId are mandatory</p><p><strong>Constructors</strong></p><pre><code class="language-julia hljs">
+Search(country,
+       operation,
+       propertyType,
+       center,
+       maxItems,
+       numPage,
+       maxPrice,
+       minPrice,
+       sinceDate,
+       orderg,
+       sort,
+       adIds,
+       hasMultimedia,
+       distance,
+       locationId,
+       locale)
+
+Search(; country::String,
+         operation::String,
+         propertyType::String,
+         center::String,
+         maxItems::Union{&lt;:Int, Nothing}=nothing,
+         numPage::Union{&lt;:Int, Nothing}=nothing,
+         maxPrice::Union{&lt;:Number, Nothing}=nothing,
+         minPrice::Union{&lt;:Number, Nothing}=nothing,
+         sinceDate::Union{&lt;:AbstractString, Nothing}=nothing,
+         order::Union{&lt;:AbstractString, Nothing}=nothing,
+         sort::Union{&lt;:AbstractString, Nothing}=nothing,
+         adIds::Union{&lt;:Int, Nothing}=nothing,
+         hasMultimedia::Union{Bool, Nothing}=nothing,
+         distance::Union{&lt;:Int, Nothing}=nothing,
+         locationId::Union{&lt;:AbstractString, Nothing}=nothing,
+         locale::String)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; Search(&quot;es&quot;, &quot;sale&quot;, &quot;homes&quot;, &quot;42.0,-3.7&quot;,  nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, 15000,  nothing, &quot;ca&quot;)
+Search:
+	country =&gt; es
+	operation =&gt; sale
+	propertyType =&gt; homes
+	center =&gt; 42.0,-3.7
+	maxItems =&gt; nothing
+	numPage =&gt; nothing
+	maxPrice =&gt; nothing
+	minPrice =&gt; nothing
+	sinceDate =&gt; nothing
+	order =&gt; nothing
+	sort =&gt; nothing
+	adIds =&gt; nothing
+	hasMultimedia =&gt; nothing
+	distance =&gt; 15000
+	locationId =&gt; nothing
+	locale =&gt; ca
+
+julia&gt; Search(country=&quot;it&quot;, operation=&quot;sale&quot;, propertyType=&quot;homes&quot;, center=&quot;42.0,-3.7&quot;, locale=&quot;es&quot;, distance=15000)
+Search:
+	country =&gt; it
+	operation =&gt; sale
+	propertyType =&gt; homes
+	center =&gt; 42.0,-3.7
+	maxItems =&gt; nothing
+	numPage =&gt; nothing
+	maxPrice =&gt; nothing
+	minPrice =&gt; nothing
+	sinceDate =&gt; nothing
+	order =&gt; nothing
+	sort =&gt; nothing
+	adIds =&gt; nothing
+	hasMultimedia =&gt; nothing
+	distance =&gt; 15000
+	locationId =&gt; nothing
+	locale =&gt; es
+
+julia&gt; Search(&quot;it&quot;, &quot;sale&quot;, &quot;homes&quot;, &quot;42.0,-3.7&quot;, locale=&quot;es&quot;, distance=15000)
+Search:
+	country =&gt; it
+	operation =&gt; sale
+	propertyType =&gt; homes
+	center =&gt; 42.0,-3.7
+	maxItems =&gt; nothing
+	numPage =&gt; nothing
+	maxPrice =&gt; nothing
+	minPrice =&gt; nothing
+	sinceDate =&gt; nothing
+	order =&gt; nothing
+	sort =&gt; nothing
+	adIds =&gt; nothing
+	hasMultimedia =&gt; nothing
+	distance =&gt; 15000
+	locationId =&gt; nothing
+	locale =&gt; es</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rogersamso/IdealistaAPIClient.jl/blob/afdeb981b9c1b386ae79ae7a04391b30e182f44c/src/types.jl#L7-L114">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../usage/">« Usage</a><a class="docs-footer-nextpage" href="../functions/">Functions »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.22 on <span class="colophon-date" title="Friday 19 August 2022 19:16">Friday 19 August 2022</span>. Using Julia version 1.8.0.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
