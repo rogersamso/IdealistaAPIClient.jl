@@ -8,8 +8,7 @@ using Serialization
 using InteractiveUtils
 
 
-export
-    get_token,
+export get_token,
     search,
     valid_fields,
     process_response,

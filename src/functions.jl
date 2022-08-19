@@ -21,7 +21,7 @@ security
 
 ```
 """
-function valid_fields(T::Type; indent::Int=0)
+function valid_fields(T::Type; indent::Int = 0)
     for field in fieldnames(T)
         println("\t"^indent, field)
     end
@@ -122,11 +122,11 @@ Premises
 
 ```
 """
-function valid_fields(;indent::Int=1)
-    x = pushfirst!(subtypes(PropertyFields), Search)
+function valid_fields(; indent::Int = 1)
+    x = pushfirst!(subtypes(PropertySearchFields), Search)
     for T in x
         println(T)
-        valid_fields(T, indent=indent)
+        valid_fields(T, indent = indent)
     end
 end
 
@@ -175,13 +175,13 @@ Dict{String, Any} with 5 entries:
 
 ```
 """
-function get_token()::Dict{String, Any}
+function get_token()::Dict{String,Any}
 
     serialization_path = joinpath(tempdir(), "idealista_tk.bin")
 
     if isfile(serialization_path)
         token_dict = deserialize(serialization_path)
-        valid_token(token_dict) &&  return token_dict
+        valid_token(token_dict) && return token_dict
     end
 
     @info "Getting new access token"
@@ -193,11 +193,15 @@ function get_token()::Dict{String, Any}
         SECRET = ENV["SECRET"]
 
         creds = generate_credentials(APIKEY, SECRET)
-        response = HTTP.post("https://api.idealista.com/oauth/token",
-                      ["Content-Type" => "application/x-www-form-urlencoded",
-                       "Authorization" => "Basic $creds"],
-                      "grant_type=client_credentials&scope=read",
-                      require_ssl_verification = false)
+        response = HTTP.post(
+            "https://api.idealista.com/oauth/token",
+            [
+                "Content-Type" => "application/x-www-form-urlencoded",
+                "Authorization" => "Basic $creds",
+            ],
+            "grant_type=client_credentials&scope=read",
+            require_ssl_verification = false,
+        )
 
         token_dict = JSON.parse(String(response.body))
 
@@ -211,7 +215,7 @@ function get_token()::Dict{String, Any}
     end
 
     # to store the full JSON response with expiraion date in datetime format
-    token_dict["expires_in"] =  Dates.now() + Dates.Second(token_dict["expires_in"])
+    token_dict["expires_in"] = Dates.now() + Dates.Second(token_dict["expires_in"])
 
     # serializing token_dict
     serialize(serialization_path, token_dict)
@@ -222,7 +226,7 @@ end
 
 
 """
-    search(base_search::Search, property::Union{<:PropertyFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)
+    search(base_search::Search, property::Union{<:PropertySearchFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)
 
 Perform a search in the Idealista Search API
 
@@ -255,18 +259,21 @@ Dict{String, Any} with 12 entries:
 
 ```
 """
-function search(base_search::Search,
-                property::Union{<:PropertyFields, Nothing}=nothing;
-                token_d::Union{Dict{String, Any}, Nothing}=nothing)::Dict{String, Any}
+function search(
+    base_search::Search,
+    property::Union{<:PropertySearchFields,Nothing} = nothing;
+    token_d::Union{Dict{String,Any},Nothing} = nothing,
+)::Dict{String,Any}
 
     if token_d != nothing
-        valid_token(token_d) ? token = token_d["access_token"] : token = get_token()["access_token"]
+        valid_token(token_d) ? token = token_d["access_token"] :
+        token = get_token()["access_token"]
     else
         token = get_token()["access_token"]
     end
 
     search_fields = validate_search_fields(base_search, property)
-    
+
     response = request_data(token, search_fields)
 
 end
@@ -274,7 +281,7 @@ end
 
 
 """
-    search(base_search::Search, property::Union{<:PropertyFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)
+    search(base_search::Search, property::Union{<:PropertySearchFields, Nothing}=nothing; token::Union{Dict{String, Any}, Nothing}=nothing)
 
 Perform a search in the Idealista Search API
 
@@ -304,15 +311,16 @@ Dict{String, Any} with 12 entries:
 
 ```
 """
-function search(;token_d::Union{Dict{String, Any}, Nothing}=nothing, kwargs...)
+function search(; token_d::Union{Dict{String,Any},Nothing} = nothing, kwargs...)
 
     if ~isnothing(token_d)
-        valid_token(token_d) ? token = token_d["access_token"] : token = get_token()["access_token"]
+        valid_token(token_d) ? token = token_d["access_token"] :
+        token = get_token()["access_token"]
     else
         token = get_token()["access_token"]
     end
 
-    search_fields = validate_search_fields(;(;kwargs...)...)
+    search_fields = validate_search_fields(; (; kwargs...)...)
 
     response = request_data(token, search_fields)
 
@@ -329,43 +337,58 @@ Goes through the dictionary of the parsed Idealista Search API response and inst
 # Examples
 
 """
-function process_response(response::Dict{String, Any})::Response
-    
+function process_response(response::Dict{String,Any})::Response
+
     resp_cp = deepcopy(response)
-    
+
     elements = pop!(resp_cp, "elementList")
-    
+
     new_elements = Vector{Element}(undef, length(elements))
 
     for (num, element) in enumerate(elements)
         if haskey(element, "parkingSpace")
-            setindex!(element, ParkingSpace(;stringdict_to_nt(element["parkingSpace"])...), "parkingSpace")
+            setindex!(
+                element,
+                ParkingSpace(; stringdict_to_nt(element["parkingSpace"])...),
+                "parkingSpace",
+            )
         end
         if haskey(element, "detailedType")
-            setindex!(element, DetailedType(;stringdict_to_nt(element["detailedType"])...), "detailedType")
+            setindex!(
+                element,
+                DetailedType(; stringdict_to_nt(element["detailedType"])...),
+                "detailedType",
+            )
         end
-        new_elements[num] = Element(;stringdict_to_nt(element)...)
+        new_elements[num] = Element(; stringdict_to_nt(element)...)
     end
 
     setindex!(resp_cp, new_elements, "elementList")
 
-    Response(;stringdict_to_nt(resp_cp)...)
+    Response(; stringdict_to_nt(resp_cp)...)
 
 end
 
 
-function validate_search_fields(base_search::Search,
-    property::Union{<:PropertyFields, Nothing})::Dict
+function validate_search_fields(
+    base_search::Search,
+    property::Union{<:PropertySearchFields,Nothing},
+)::Dict
 
-    ~isnothing(property) && !isa(property,
-       getfield(Main.IdealistaAPIClient,
-                Symbol(uppercasefirst(base_search.propertyType)))) &&
+    ~isnothing(property) &&
+        !isa(
+            property,
+            getfield(
+                Main.IdealistaAPIClient,
+                Symbol(uppercasefirst(base_search.propertyType)),
+            ),
+        ) &&
         error("The propertyType value in the Search struct must coincide
               with the type of the property argument")
 
     search_fields = struct_to_dict(base_search)
 
-    if property!=nothing
+    if property != nothing
         merge!(search_fields, struct_to_dict(property))
     end
 
@@ -373,12 +396,12 @@ function validate_search_fields(base_search::Search,
 end
 
 
-function validate_search_fields(;kwargs...)::Dict
+function validate_search_fields(; kwargs...)::Dict
 
-    search_fields = Dict(key=>getindex(kwargs, key) for key in keys(kwargs))
+    search_fields = Dict(key => getindex(kwargs, key) for key in keys(kwargs))
 
-    base_search = Dict{Symbol, Any}()
-    property_search = Dict{Symbol, Any}()
+    base_search = Dict{Symbol,Any}()
+    property_search = Dict{Symbol,Any}()
 
     for field ∈ keys(search_fields)
         if field ∈ fieldnames(Search)
@@ -388,13 +411,14 @@ function validate_search_fields(;kwargs...)::Dict
         end
     end
 
-    search_obj = struct_to_dict(Search(;(;base_search...)...))
+    search_obj = struct_to_dict(Search(; (; base_search...)...))
 
     if !isempty(property_search)
 
-        property_type = getfield(Main.IdealistaAPIClient,
-                                Symbol(uppercasefirst(
-                                    base_search[:propertyType])))
+        property_type = getfield(
+            Main.IdealistaAPIClient,
+            Symbol(uppercasefirst(base_search[:propertyType])),
+        )
 
         property_search_fields = keys(property_search)
 
@@ -406,7 +430,7 @@ function validate_search_fields(;kwargs...)::Dict
             end
         end
 
-        property_obj = property_type(;(;property_search...)...) |> struct_to_dict
+        property_obj = property_type(; (; property_search...)...) |> struct_to_dict
         merge!(search_obj, property_obj)
 
     end
@@ -415,14 +439,15 @@ function validate_search_fields(;kwargs...)::Dict
 end
 
 
-function request_data(token::AbstractString, search_fields::Dict{String, Any})
+function request_data(token::AbstractString, search_fields::Dict{String,Any})
 
     try
         response = HTTP.post(
             "https://api.idealista.com/3.5/$(getindex(search_fields,
             "country"))/search",
-            [ "Authorization" => "Bearer $token"],
-            body = search_fields)
+            ["Authorization" => "Bearer $token"],
+            body = search_fields,
+        )
         JSON.parse(String(response.body))
 
     catch e
@@ -433,7 +458,3 @@ function request_data(token::AbstractString, search_fields::Dict{String, Any})
         end
     end
 end
-
-
-
-
