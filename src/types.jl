@@ -46,7 +46,7 @@ Search(; country::String,
          order::Union{<:AbstractString, Nothing}=nothing,
          sort::Union{<:AbstractString, Nothing}=nothing,
          adIds::Union{<:Int, Nothing}=nothing,
-         hasMultimedia::Union{Bool, Nothing}=nothing),
+         hasMultimedia::Union{Bool, Nothing}=nothing,
          distance::Union{<:Int, Nothing}=nothing,
          locationId::Union{<:AbstractString, Nothing}=nothing,
          locale::String)
@@ -69,7 +69,7 @@ Search:
 	sort => nothing
 	adIds => nothing
 	hasMultimedia => nothing
-    distance => 15000
+	distance => 15000
 	locationId => nothing
 	locale => ca
 
@@ -88,7 +88,7 @@ Search:
 	sort => nothing
 	adIds => nothing
 	hasMultimedia => nothing
-    distance => 15000
+	distance => 15000
 	locationId => nothing
 	locale => es
 
@@ -107,9 +107,9 @@ Search:
 	sort => nothing
 	adIds => nothing
 	hasMultimedia => nothing
-	locale => es
-    distance => 15000
+	distance => 15000
 	locationId => nothing
+	locale => es
 ```
 """
 @kwdef struct Search <: SearchFields
